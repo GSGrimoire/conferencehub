@@ -105,7 +105,9 @@ async function main() {
     if (!isDue(t, ed, st)) { skipped++; continue; }
     if (t.mode === "browser") { skipped++; continue; } // browserhentning kommer i næste trin
     if (!(await allowed(t.url))) {
-      queue.push({ type: "blocked_by_robots", url: t.url, edition_id: t.edition_id ?? null, series_id: t.series_id ?? null, detected: now });
+      // Meldes kun første gang; siden må derefter tjekkes manuelt af Claude-redaktøren.
+      if (!st.blocked) queue.push({ type: "blocked_by_robots", url: t.url, edition_id: t.edition_id ?? null, series_id: t.series_id ?? null, detected: now });
+      state[t.url] = { ...st, blocked: true, checked: now };
       skipped++; continue;
     }
     checked++;
