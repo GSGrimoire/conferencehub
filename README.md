@@ -15,6 +15,10 @@ Planen for version 1: https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7
 | `supabase/schema.sql` | Databaseskema med rækkesikkerhed |
 | `site/` | Den læsbare side (HTML, CSS, JS, egne skrifttyper) |
 | `scripts/build.mjs` | Bygger `dist/` til Cloudflare Pages |
+| `data/watch.json` | Overvågningslisten: sider pr. udgave, hentemåde og evt. interval |
+| `scripts/watch.mjs` | Daglig ændringsdetektion (kører i `.github/workflows/watch.yml`) |
+| `state/` | Fingeraftryk og seneste tekst pr. overvåget side |
+| `queue/` | Ændringer og døde links til Claude-redaktøren, én fil pr. dag |
 
 ## Kør lokalt
 
@@ -49,5 +53,6 @@ Reglen håndhæves i databasen (`attendance read`-politikken), ikke kun på hjem
 - [ ] Fase 0: Supabase-projekt (EU-region) og synkronisering
 - [x] Fase 1: læsbar side (filtre, søgning, tidslinje, frister, kalenderfil pr. konference)
 - [ ] Fase 1: offentliggørelse på Cloudflare Pages
-- [ ] Fase 2: overvågning
+- [x] Fase 2: daglig ændringsdetektion (html og pdf)
+- [ ] Fase 2: browserhentning, seriesider for næste udgave, Claude-redaktør og godkendelseskø
 - [ ] Fase 3: login, grupper og deltagelse

@@ -1,0 +1,43 @@
+name: Daglig overvågning
+
+on:
+  schedule:
+    - cron: "0 4 * * *"   # 05:00 dansk vintertid, 06:00 sommertid
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "Tjek alle sider uanset interval"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Find ændringer
+        env:
+          WATCH_ALL: ${{ inputs.all && '1' || '' }}
+        run: node scripts/watch.mjs
+      - name: Gem resultat
+        run: |
+          git config user.name "conferencehub-bot"
+          git config user.email "conferencehub-bot@users.noreply.github.com"
+          git add state queue
+          if git diff --cached --quiet; then
+            echo "Ingen ændringer at gemme."
+          else
+            git commit -m "Overvågning $(date -u +%F)"
+            git push
+          fi
