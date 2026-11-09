@@ -14,7 +14,7 @@ Planen for version 1: https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7
 | `data/series.json` | Konferenceserier med korte navne |
 | `supabase/migrations/` | Databaseskema med rækkesikkerhed. Køres af Supabase-GitHub-koblingen ved push til `main` |
 | `scripts/sync.mjs` | Lægger `data/` ind i Supabase (kører i `.github/workflows/sync.yml`) |
-| `site/` | Den læsbare side (HTML, CSS, JS, egne skrifttyper) |
+| `site/` | Siden (HTML, CSS, JS, egne skrifttyper). `auth.js` = login og deltagelse, `config.js` = Supabase-URL og publishable key |
 | `scripts/build.mjs` | Bygger `dist/` til Cloudflare Pages |
 | `data/watch.json` | Overvågningslisten: sider pr. udgave, hentemåde og evt. interval |
 | `scripts/watch.mjs` | Daglig ændringsdetektion (kører i `.github/workflows/watch.yml`) |
@@ -56,4 +56,5 @@ Reglen håndhæves i databasen (`attendance read`-politikken), ikke kun på hjem
 - [x] Fase 1: læsbar side (filtre, søgning, tidslinje, frister, kalenderfil pr. konference)
 - [x] Fase 2: daglig ændringsdetektion (html og pdf)
 - [ ] Fase 2: browserhentning, seriesider for næste udgave, Claude-redaktør og godkendelseskø
-- [ ] Fase 3: login, grupper og deltagelse
+- [x] Fase 3 (beta): login med Google, grupper med invitationslink, deltagelse, Vis aktivitet, forslag
+- [ ] Fase 3: mail-login (kræver eget domæne + SMTP), personligt kalenderfeed

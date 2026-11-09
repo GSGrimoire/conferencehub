@@ -15,10 +15,12 @@
   <div class="wrap top-inner">
     <p class="brand">ConferenceHub</p>
     <p class="scope">Plastik- og rekonstruktiv kirurgi</p>
+    <div class="account" id="account"></div>
   </div>
 </header>
 
 <main>
+  <section class="me wrap" id="mig" hidden aria-labelledby="me-title"></section>
   <section class="board wrap" aria-labelledby="board-title">
     <h1 id="board-title">De næste tolv måneder</h1>
     <p class="lede" id="next-deadline">Indlæser frister…</p>
@@ -55,9 +57,24 @@
 <footer class="foot">
   <div class="wrap">
     <p>Datoer og frister er hentet fra konferencernes egne sider. Tjek altid kilden, før du indsender eller booker.</p>
-    <p>Mangler der en konference? Forslag åbner med login i næste version.</p>
+    <p>Mangler der en konference? Log ind og foreslå den under <a href="#mig">Min side</a>.</p>
   </div>
 </footer>
+<dialog id="login-dialog" aria-labelledby="login-title">
+  <form method="dialog" class="dlg-close"><button aria-label="Luk">×</button></form>
+  <h2 id="login-title">Log ind</h2>
+  <p>Log ind for at melde din deltagelse og se, hvem fra dine grupper der skal afsted.</p>
+  <button class="btn solid" type="button" id="login-google">Fortsæt med Google</button>
+  <form id="login-email" hidden>
+    <label for="login-email-input">Eller få et login-link på mail</label>
+    <div class="inline"><input type="email" id="login-email-input" required autocomplete="email"><button class="btn" type="submit">Send link</button></div>
+  </form>
+  <p class="hint" id="login-msg" role="status"></p>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="vendor/supabase.js" defer></script>
+<script src="config.js" defer></script>
 <script src="app.js" defer></script>
+<script src="auth.js" defer></script>
 </body>
 </html>

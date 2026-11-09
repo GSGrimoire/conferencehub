@@ -59,6 +59,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 
 // ---------- tilstand ----------
 const state = { editions: [], series: {}, topic: "all", q: "", today: todayDay() };
+window.CH = { state, dayOf, fmtRange, esc };
 
 function nextDeadline(e) {
   let best = null;
@@ -140,10 +141,11 @@ function row(e) {
     <summary>
       <div class="when">${esc(fmtRange(e.start, e.end))}</div>
       <div class="what"><h3>${esc(e.name)}<span class="chev" aria-hidden="true">›</span></h3><p>${esc(e.venue || "Sted ikke offentliggjort")}</p></div>
-      <div class="next">${next}</div>
+      <div class="next">${next}<span class="crowd" data-ed="${esc(e.id)}"></span></div>
     </summary>
     <div class="detail">
       <dl>${dl.map(([k, v]) => `<dt>${k}</dt><dd>${k === "Dato" || k === "Sted" ? esc(v) : v}</dd>`).join("")}</dl>
+      <div class="mine" data-ed="${esc(e.id)}" data-past="${isPast ? 1 : 0}"></div>
       <div class="actions">
         ${isPast ? "" : `<button class="btn" type="button" data-ics="${esc(e.id)}">Føj til kalender</button>`}
         ${links}
@@ -173,6 +175,7 @@ function render() {
   document.getElementById("empty").hidden = soon.length + far.length + past.length > 0;
   renderStrip();
   renderLede();
+  document.dispatchEvent(new CustomEvent("ch:rendered"));
 }
 
 function renderLede() {
