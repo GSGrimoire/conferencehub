@@ -1,0 +1,466 @@
+[
+  {
+    "id": "barcelona-breast-meeting-2026",
+    "series": "barcelona-breast-meeting",
+    "name": "Barcelona Breast Meeting (BBM) – 23. udgave",
+    "topic": "Bryst/Plastik",
+    "start": "2026-03-18",
+    "end": "2026-03-20",
+    "venue": "Hospital de Sant Pau, Barcelona, Spanien",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "bbm.cat – BBM 2026",
+        "url": "https://bbm.cat/bbm-2026/"
+      }
+    ],
+    "note": null,
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "wsls-2026",
+    "series": "wsls",
+    "name": "WSLS (11. World Symposium for Lymphedema Surgery)",
+    "topic": "Lymfødem",
+    "start": "2026-04-10",
+    "end": "2026-04-12",
+    "venue": "Junto Hotel, Columbus, OH, USA",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "ccme.osu.edu",
+        "url": "https://ccme.osu.edu/continuing-medical-education/conferences/2916/11th-world-symposium-for-lymphedema-surgery/4/10/2026"
+      }
+    ],
+    "note": "Vært: Ohio State University",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "ibsw-2026",
+    "series": "ibsw",
+    "name": "IBSW (11.) + 7th WCC BIA-ALCL",
+    "topic": "Mamma",
+    "start": "2026-05-07",
+    "end": "2026-05-09",
+    "venue": "Auditorium Leonardo Carriero, Ischia, Italien",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "ibsw.it",
+        "url": "https://ibsw.it/"
+      }
+    ],
+    "note": "Hvert andet år",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "dspr-foraarsmoede-2026",
+    "series": "dspr-foraarsmoede",
+    "name": "DSPR Forårsmøde 2026",
+    "topic": "Plastik",
+    "start": "2026-05-08",
+    "end": "2026-05-08",
+    "venue": "Danmark",
+    "abstract_deadline": "2026-03-15",
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "dspr.dk – møder",
+        "url": "https://dspr.dk/Dspr/Meetings?showNationalMeetings=True"
+      }
+    ],
+    "note": "Abstracts til dspr.ypk@gmail.com",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "euraps-2026",
+    "series": "euraps",
+    "name": "EURAPS Annual Meeting (36.) + 14. ERC",
+    "topic": "Plastik",
+    "start": "2026-05-28",
+    "end": "2026-05-28",
+    "venue": "Wien, Østrig",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "euraps.org",
+        "url": "https://www.euraps.org/"
+      }
+    ],
+    "note": null,
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "scaplas-2026",
+    "series": "scaplas",
+    "name": "SCAPLAS (40. skandinaviske kongres)",
+    "topic": "Plastik",
+    "start": "2026-06-03",
+    "end": "2026-06-05",
+    "venue": "Radisson Blu Scandinavia Hotel, Oslo, Norge",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "scaplascongress.org",
+        "url": "https://www.scaplascongress.org/"
+      }
+    ],
+    "note": "Hvert andet år. 2028 i Sverige, dato ikke udmeldt",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "efsm-2026",
+    "series": "efsm",
+    "name": "EFSM 2026 (16. kongres, European Federation of Societies for Microsurgery)",
+    "topic": "Mikrokir.",
+    "start": "2026-06-14",
+    "end": "2026-06-17",
+    "venue": "Prag, Tjekkiet",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "euromicro2026.com",
+        "url": "https://www.euromicro2026.com/"
+      }
+    ],
+    "note": null,
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "ifso-2026",
+    "series": "ifso",
+    "name": "IFSO 2026 (XXIX World Congress, bariatrisk/metabolisk kirurgi)",
+    "topic": "Overvægt",
+    "start": "2026-09-01",
+    "end": "2026-09-04",
+    "venue": "Toronto, Canada",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "ifso2026.org",
+        "url": "https://ifso2026.org/"
+      }
+    ],
+    "note": "Relevant for postbariatrisk kropskonturering",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "espras-2026",
+    "series": "espras",
+    "name": "ESPRAS 2026 (16. kvadrennale kongres, joint m. Swiss Plastic Surgery)",
+    "topic": "Plastik",
+    "start": "2026-09-03",
+    "end": "2026-09-05",
+    "venue": "BERNEXPO, Bern, Schweiz",
+    "abstract_deadline": "2026-03-31",
+    "early_bird_deadline": "2026-06-14",
+    "registration_deadline": "2026-09-02",
+    "deadline_notes": {
+      "registration": "02-09-2026 (standardtakst)"
+    },
+    "links": [
+      {
+        "label": "espras2026 – priser og frister",
+        "url": "https://espras2026.meister-concept.ch/general-information/information/"
+      }
+    ],
+    "note": "Egen takst for sygeplejersker (400 EUR) og Trainees Academy",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "london-breast-meeting-2026",
+    "series": "london-breast-meeting",
+    "name": "London Breast Meeting (9.)",
+    "topic": "Bryst/Plastik",
+    "start": "2026-09-09",
+    "end": "2026-09-11",
+    "venue": "Royal College of Physicians, London, UK",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "londonbreastmeeting – book",
+        "url": "https://londonbreastmeeting.com/live/en/page/book-now"
+      }
+    ],
+    "note": "Tema: pitfalls i æstetisk/rekonstruktiv brystkirurgi. 27 CPD-point",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "dspr-efteraarsmoede-2026",
+    "series": "dspr-efteraarsmoede",
+    "name": "DSPR Efterårsmøde 2026",
+    "topic": "Plastik",
+    "start": "2026-09-25",
+    "end": "2026-09-26",
+    "venue": "Odense, Danmark",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "dspr.dk – møder",
+        "url": "https://dspr.dk/Dspr/Meetings?showNationalMeetings=True"
+      }
+    ],
+    "note": "To dages internatmøde",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "asps-the-meeting-2026",
+    "series": "asps-the-meeting",
+    "name": "ASPS Plastic Surgery The Meeting 2026",
+    "topic": "Plastik",
+    "start": "2026-10-15",
+    "end": "2026-10-18",
+    "venue": "George R. Brown Convention Center, Houston, TX, USA",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "plasticsurgerythemeeting.com",
+        "url": "https://www.plasticsurgerythemeeting.com/"
+      }
+    ],
+    "note": "DSPR har partnerskab med ASPS, hvilket giver medlemspris",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "fsp-landskursus-2026",
+    "series": "fsp-landskursus",
+    "name": "Landskursus for plastikkirurgiske sygeplejersker",
+    "topic": "Sygepleje",
+    "start": "2026-11-05",
+    "end": "2026-11-05",
+    "venue": "Danmark",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "conferencemanager.dk – tilmelding",
+        "url": "https://www.conferencemanager.dk/fs24-landskursus2026/signup"
+      }
+    ],
+    "note": "FS Plastikkirurgiske Sygeplejersker (DSR). Program: conferencemanager.dk/fs24-landskursus2026",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "icals-2027",
+    "series": "icals",
+    "name": "iCALS 2027 (2. International Congress for Advanced Lymphatic Surgery)",
+    "topic": "Lymfødem",
+    "start": "2027-03-04",
+    "end": "2027-03-06",
+    "venue": "TH Roma – Carpegna Palace Hotel, Rom, Italien",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "icals2027.com",
+        "url": "https://www.icals2027.com/"
+      }
+    ],
+    "note": "Abstract max 300 ord. Accepterede abstracts giver reduceret deltagergebyr",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "barcelona-breast-meeting-2027",
+    "series": "barcelona-breast-meeting",
+    "name": "Barcelona Breast Meeting (BBM) – 24. udgave",
+    "topic": "Bryst/Plastik",
+    "start": "2027-03-17",
+    "end": "2027-03-19",
+    "venue": "Hospital de Sant Pau, Barcelona, Spanien",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "bbm.cat",
+        "url": "https://bbm.cat/"
+      }
+    ],
+    "note": "25 % rabat ved samtidig LBM-deltagelse",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "dusseldorf-breast-meeting-2027",
+    "series": "dusseldorf-breast-meeting",
+    "name": "Dusseldorf Breast Meeting (1.)",
+    "topic": "Bryst/Plastik",
+    "start": "2027-04-09",
+    "end": "2027-04-10",
+    "venue": "Hotel Kö59, Düsseldorf, Tyskland",
+    "abstract_deadline": "2027-01-30",
+    "early_bird_deadline": "2027-01-12",
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "dusseldorf-breast-meeting.com – call for abstracts",
+        "url": "https://dusseldorf-breast-meeting.com/en/call-for-abstracts"
+      }
+    ],
+    "note": "Første udgave. Rekonstruktiv, onkologisk og æstetisk brystkirurgi. Abstract åbnede 19-10-2026, frist kl. 23.59 CET. Tilmelding: dusseldorf-breast-meeting.com/en/book",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "ibsw-2027",
+    "series": "ibsw",
+    "name": "IBSW (12.) + 8th WCC BIA-ALCL",
+    "topic": "Mamma",
+    "start": "2027-04-22",
+    "end": "2027-04-24",
+    "venue": "Athen, Grækenland",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "ibsw.it",
+        "url": "https://ibsw.it/"
+      }
+    ],
+    "note": "Hvert andet år. Fokus på minimalt invasiv og robotassisteret brystkirurgi",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "euraps-2027",
+    "series": "euraps",
+    "name": "EURAPS Annual Meeting (37.)",
+    "topic": "Plastik",
+    "start": "2027-05-26",
+    "end": "2027-05-29",
+    "venue": "Porto Antico di Genova, Genova, Italien",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "euraps.org – kommende møde",
+        "url": "https://www.euraps.org/meetings/upcoming-meeting/"
+      }
+    ],
+    "note": "Streng abstractudvælgelse (ca. 1 af 4)",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "wsrm-2027",
+    "series": "wsrm",
+    "name": "WSRM (14. kongres, World Society for Reconstructive Microsurgery)",
+    "topic": "Mikrokir.",
+    "start": "2027-06-03",
+    "end": "2027-06-05",
+    "venue": "Lütfi Kırdar Congress Center, Istanbul, Tyrkiet",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "wsrm2027.com",
+        "url": "https://www.wsrm2027.com/"
+      }
+    ],
+    "note": "Hvert andet år",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "icoplast-2027",
+    "series": "icoplast",
+    "name": "ICOPLAST 4. World Congress",
+    "topic": "Plastik",
+    "start": "2027-06-24",
+    "end": "2027-06-26",
+    "venue": "Berlin, Tyskland",
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "icoplast.org – kongres",
+        "url": "https://icoplast.org/congress/"
+      }
+    ],
+    "note": "Vært: DGPRÄC. DSPR er ICOPLAST-medlem",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  },
+  {
+    "id": "eba-2027",
+    "series": "eba",
+    "name": "EBA 2027 (22. European Burns Association Congress)",
+    "topic": "Forbrænding",
+    "start": "2027-09-15",
+    "end": "2027-09-18",
+    "venue": null,
+    "abstract_deadline": null,
+    "early_bird_deadline": null,
+    "registration_deadline": null,
+    "deadline_notes": {},
+    "links": [
+      {
+        "label": "euroburn.org – 22. kongres",
+        "url": "https://www.euroburn.org/event/22nd-eba-congress/"
+      }
+    ],
+    "note": "Hvert andet år. Sted ikke annonceret. EMSB-kursus i Antwerpen 14-09-2027",
+    "status": "confirmed",
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+  }
+]

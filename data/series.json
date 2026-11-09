@@ -1,0 +1,92 @@
+[
+  {
+    "id": "asps-the-meeting",
+    "name": "ASPS Plastic Surgery The Meeting",
+    "short_name": "ASPS"
+  },
+  {
+    "id": "barcelona-breast-meeting",
+    "name": "Barcelona Breast Meeting",
+    "short_name": "BBM"
+  },
+  {
+    "id": "dspr-efteraarsmoede",
+    "name": "DSPR Efterårsmøde",
+    "short_name": "DSPR efterår"
+  },
+  {
+    "id": "dspr-foraarsmoede",
+    "name": "DSPR Forårsmøde",
+    "short_name": "DSPR forår"
+  },
+  {
+    "id": "dusseldorf-breast-meeting",
+    "name": "Dusseldorf Breast Meeting",
+    "short_name": "Düsseldorf"
+  },
+  {
+    "id": "eba",
+    "name": "European Burns Association Congress",
+    "short_name": "EBA"
+  },
+  {
+    "id": "efsm",
+    "name": "European Federation of Societies for Microsurgery",
+    "short_name": "EFSM"
+  },
+  {
+    "id": "espras",
+    "name": "ESPRAS Congress",
+    "short_name": "ESPRAS"
+  },
+  {
+    "id": "euraps",
+    "name": "EURAPS Annual Meeting",
+    "short_name": "EURAPS"
+  },
+  {
+    "id": "fsp-landskursus",
+    "name": "Landskursus for plastikkirurgiske sygeplejersker",
+    "short_name": "FSP landskursus"
+  },
+  {
+    "id": "ibsw",
+    "name": "International Breast Surgery Week",
+    "short_name": "IBSW"
+  },
+  {
+    "id": "icals",
+    "name": "International Congress for Advanced Lymphatic Surgery",
+    "short_name": "iCALS"
+  },
+  {
+    "id": "icoplast",
+    "name": "ICOPLAST World Congress",
+    "short_name": "ICOPLAST"
+  },
+  {
+    "id": "ifso",
+    "name": "IFSO World Congress",
+    "short_name": "IFSO"
+  },
+  {
+    "id": "london-breast-meeting",
+    "name": "London Breast Meeting",
+    "short_name": "London Breast"
+  },
+  {
+    "id": "scaplas",
+    "name": "SCAPLAS – Skandinavisk plastikkirurgisk kongres",
+    "short_name": "SCAPLAS"
+  },
+  {
+    "id": "wsls",
+    "name": "World Symposium for Lymphedema Surgery",
+    "short_name": "WSLS"
+  },
+  {
+    "id": "wsrm",
+    "name": "World Society for Reconstructive Microsurgery",
+    "short_name": "WSRM"
+  }
+]

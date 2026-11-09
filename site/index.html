@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ConferenceHub – plastik- og rekonstruktiv kirurgi</title>
+<meta name="description" content="Konferencer i plastik- og rekonstruktiv kirurgi med datoer, abstract- og tilmeldingsfrister og direkte links.">
+<link rel="preload" href="fonts/bricolage-grotesque-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#liste">Gå til konferencelisten</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <p class="brand">ConferenceHub</p>
+    <p class="scope">Plastik- og rekonstruktiv kirurgi</p>
+  </div>
+</header>
+
+<main>
+  <section class="board wrap" aria-labelledby="board-title">
+    <h1 id="board-title">De næste tolv måneder</h1>
+    <p class="lede" id="next-deadline">Indlæser frister…</p>
+    <div class="strip-scroll" tabindex="0" aria-label="Tidslinje over konferencer de næste tolv måneder. Rul vandret for at se hele året.">
+      <div class="strip" id="strip"></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="liste" aria-label="Konferencer">
+    <div class="tools">
+      <div class="chips" role="group" aria-label="Filtrér efter emne" id="chips"></div>
+      <label class="search">
+        <span>Søg</span>
+        <input type="search" id="q" placeholder="Fx DSPR, Barcelona, mikrokirurgi" autocomplete="off">
+      </label>
+    </div>
+
+    <h2 id="h-soon">Snarligt <span class="count" id="c-soon"></span></h2>
+    <p class="section-note">Starter inden for de næste otte måneder.</p>
+    <ol class="rows" id="soon" aria-labelledby="h-soon"></ol>
+
+    <h2 id="h-far">Senere <span class="count" id="c-far"></span></h2>
+    <ol class="rows" id="far" aria-labelledby="h-far"></ol>
+
+    <details class="past">
+      <summary><h2 id="h-past">Overstået <span class="count" id="c-past"></span></h2></summary>
+      <ol class="rows" id="past" aria-labelledby="h-past"></ol>
+    </details>
+
+    <p class="empty" id="empty" hidden>Ingen konferencer passer på filteret. Vælg "Alle" eller ret søgningen.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Datoer og frister er hentet fra konferencernes egne sider. Tjek altid kilden, før du indsender eller booker.</p>
+    <p>Mangler der en konference? Forslag åbner med login i næste version.</p>
+  </div>
+</footer>
+<script src="app.js" defer></script>
+</body>
+</html>
