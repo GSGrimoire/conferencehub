@@ -30,8 +30,10 @@ async function upsert(table, rows) {
   const r = await fetch(`${url}/rest/v1/${table}?on_conflict=id`, {
     method: "POST",
     headers: {
-      apikey: key, authorization: `Bearer ${key}`, "content-type": "application/json",
+      apikey: key, "content-type": "application/json",
       prefer: "resolution=merge-duplicates,return=minimal",
+      // Nye nøgler (sb_secret_...) sendes kun i apikey; den gamle service_role-JWT (eyJ...) også som Bearer.
+      ...(key.startsWith("eyJ") ? { authorization: `Bearer ${key}` } : {}),
     },
     body: JSON.stringify(rows),
   });
