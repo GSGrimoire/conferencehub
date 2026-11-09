@@ -12,7 +12,8 @@ Planen for version 1: https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7
 | --- | --- |
 | `data/editions.json` | Konferenceudgaver i pilot-scope. Hver udgave har et fast id (fx `dspr-efteraarsmoede-2026`), som deltagelse hænger på |
 | `data/series.json` | Konferenceserier med korte navne |
-| `supabase/schema.sql` | Databaseskema med rækkesikkerhed |
+| `supabase/migrations/` | Databaseskema med rækkesikkerhed. Køres af Supabase-GitHub-koblingen ved push til `main` |
+| `scripts/sync.mjs` | Lægger `data/` ind i Supabase (kører i `.github/workflows/sync.yml`) |
 | `site/` | Den læsbare side (HTML, CSS, JS, egne skrifttyper) |
 | `scripts/build.mjs` | Bygger `dist/` til Cloudflare Pages |
 | `data/watch.json` | Overvågningslisten: sider pr. udgave, hentemåde og evt. interval |
@@ -50,9 +51,9 @@ Reglen håndhæves i databasen (`attendance read`-politikken), ikke kun på hjem
 ## Status
 
 - [x] Fase 0: pilotdata og skema
-- [ ] Fase 0: Supabase-projekt (EU-region) og synkronisering
+- [x] Fase 0: Supabase-projekt, migration og synkronisering
+- [x] Fase 1: online på https://conferencehub.goofyspook.workers.dev
 - [x] Fase 1: læsbar side (filtre, søgning, tidslinje, frister, kalenderfil pr. konference)
-- [ ] Fase 1: offentliggørelse på Cloudflare Pages
 - [x] Fase 2: daglig ændringsdetektion (html og pdf)
 - [ ] Fase 2: browserhentning, seriesider for næste udgave, Claude-redaktør og godkendelseskø
 - [ ] Fase 3: login, grupper og deltagelse
