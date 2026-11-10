@@ -1,44 +1,49 @@
 {
   "https://www.icals2027.com/": {
-    "hash": "bb977fde8bd3dc115b0364cf777f6ad1c4839231cbe3e3dc90e355c3116f2d92",
-    "checked": "2026-11-09T05:54:05.163Z",
-    "changed": "2026-11-09T05:54:05.163Z",
+    "hash": "2fbc332dd58ab01a2770026ba22e001cd5a31d03a7b6211e14fbbb63cad5f7fe",
+    "checked": "2026-11-10T12:17:23.647Z",
+    "changed": "2026-11-10T12:17:23.647Z",
     "fails": 0
   },
   "https://dusseldorf-breast-meeting.com/en/call-for-abstracts": {
     "hash": "eedfb5c5c0cc62ebc82432d7b8eb120eaa451e8c3e821bde77726cc37d6b26c4",
-    "checked": "2026-11-09T05:54:05.163Z",
+    "checked": "2026-11-10T12:17:23.647Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://ibsw.it/": {
     "hash": "f7014d298864b342b8a0076a37be9285acf04ecc52e73020f69a6336a7792dae",
-    "checked": "2026-11-09T05:54:05.163Z",
+    "checked": "2026-11-10T12:17:23.647Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://www.euraps.org/meetings/upcoming-meeting/": {
     "hash": "f9a53187bfcaf682a45de4afd389dfa73e479c5da2a4f583021e37b5d716d1a9",
-    "checked": "2026-11-09T05:54:05.163Z",
+    "checked": "2026-11-10T12:17:23.647Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://www.wsrm2027.com/": {
     "hash": "aabcd7407a2917b528b57b928e1386c822297367a385d3ec74f19f3411b1b035",
-    "checked": "2026-11-09T05:54:05.163Z",
+    "checked": "2026-11-10T12:17:23.647Z",
     "changed": "2026-11-09T05:54:05.163Z",
-    "fails": 0
+    "fails": 1,
+    "last_error": "HTTP 403"
   },
   "https://icoplast.org/congress/": {
-    "hash": "182a5049c523b19e9b3c60a18d0cda71cb31effc890c30e55bba29643eec4d64",
-    "checked": "2026-11-09T05:54:05.163Z",
-    "changed": "2026-11-09T05:54:05.163Z",
+    "hash": "3b2047ea5b8baa6cd8fc603a9f15cacc9b9eb99c3608785a22e3d3e8f49c3d11",
+    "checked": "2026-11-10T12:17:23.647Z",
+    "changed": "2026-11-10T12:17:23.647Z",
     "fails": 0
   },
   "https://www.euroburn.org/event/22nd-eba-congress/": {
     "hash": "345e115c6ec4c3a4ba2e25f8244651ae1a192fce04caae4d120ae9cd673c8d1d",
-    "checked": "2026-11-09T05:54:05.163Z",
+    "checked": "2026-11-10T12:17:23.647Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
+  },
+  "https://bbm.cat/": {
+    "blocked": true,
+    "checked": "2026-11-10T12:17:23.647Z"
   }
 }

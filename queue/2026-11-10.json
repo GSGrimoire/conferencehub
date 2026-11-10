@@ -1,0 +1,41 @@
+[
+  {
+    "type": "changed",
+    "url": "https://www.icals2027.com/",
+    "final_url": "https://www.icals2027.com/",
+    "kind": "main",
+    "edition_id": "icals-2027",
+    "series_id": null,
+    "detected": "2026-11-10T12:17:23.647Z",
+    "pdf": false,
+    "added": [
+      "Email Subject Message"
+    ],
+    "removed": [
+      "Message Subject Email"
+    ]
+  },
+  {
+    "type": "blocked_by_robots",
+    "url": "https://bbm.cat/",
+    "edition_id": "barcelona-breast-meeting-2027",
+    "series_id": null,
+    "detected": "2026-11-10T12:17:23.647Z"
+  },
+  {
+    "type": "changed",
+    "url": "https://icoplast.org/congress/",
+    "final_url": "https://icoplast.org/congress/",
+    "kind": "main",
+    "edition_id": "icoplast-2027",
+    "series_id": null,
+    "detected": "2026-11-10T12:17:23.647Z",
+    "pdf": false,
+    "added": [
+      "Name Email Phone"
+    ],
+    "removed": [
+      "Name Subject Email"
+    ]
+  }
+]
