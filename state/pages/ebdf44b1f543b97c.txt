@@ -53,8 +53,8 @@ Submit Your Abstract
 CONTACT US FOR FURTHER INFORMATION
 Abilita JavaScript nel browser per completare questo modulo.
 Name *
+Subject Email Name
 Email *
-Email Subject Message
 Subject
 Message *
 Send
