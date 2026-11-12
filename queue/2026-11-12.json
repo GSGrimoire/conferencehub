@@ -1,0 +1,56 @@
+[
+  {
+    "type": "changed",
+    "url": "https://www.icals2027.com/",
+    "final_url": "https://www.icals2027.com/",
+    "kind": "main",
+    "edition_id": "icals-2027",
+    "series_id": null,
+    "detected": "2026-11-12T12:19:19.646Z",
+    "pdf": false,
+    "added": [
+      "Email Message Subject"
+    ],
+    "removed": [
+      "Subject Email Name"
+    ]
+  },
+  {
+    "type": "dead_link",
+    "url": "https://www.wsrm2027.com/",
+    "edition_id": "wsrm-2027",
+    "series_id": null,
+    "detected": "2026-11-12T12:19:19.646Z",
+    "error": "HTTP 403"
+  },
+  {
+    "type": "changed",
+    "url": "https://icoplast.org/congress/",
+    "final_url": "https://icoplast.org/congress/",
+    "kind": "main",
+    "edition_id": "icoplast-2027",
+    "series_id": null,
+    "detected": "2026-11-12T12:19:19.646Z",
+    "pdf": false,
+    "added": [
+      "Phone Email Message"
+    ],
+    "removed": [
+      "Message Email Subject"
+    ]
+  },
+  {
+    "type": "changed",
+    "url": "https://www.euroburn.org/event/22nd-eba-congress/",
+    "final_url": "https://www.euroburn.org/event/22nd-eba-congress/",
+    "kind": "main",
+    "edition_id": "eba-2027",
+    "series_id": null,
+    "detected": "2026-11-12T12:19:19.646Z",
+    "pdf": false,
+    "added": [
+      "EMSB Course"
+    ],
+    "removed": []
+  }
+]

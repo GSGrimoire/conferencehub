@@ -53,9 +53,9 @@ Submit Your Abstract
 CONTACT US FOR FURTHER INFORMATION
 Abilita JavaScript nel browser per completare questo modulo.
 Name *
-Subject Email Name
 Email *
 Subject
+Email Message Subject
 Message *
 Send
 iCALS 2027 – International Congress for Advanced Lymphatic Surgery
