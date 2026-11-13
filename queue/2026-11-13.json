@@ -1,0 +1,34 @@
+[
+  {
+    "type": "changed",
+    "url": "https://www.icals2027.com/",
+    "final_url": "https://www.icals2027.com/",
+    "kind": "main",
+    "edition_id": "icals-2027",
+    "series_id": null,
+    "detected": "2026-11-13T11:57:02.955Z",
+    "pdf": false,
+    "added": [
+      "Email Subject Name"
+    ],
+    "removed": [
+      "Email Message Subject"
+    ]
+  },
+  {
+    "type": "changed",
+    "url": "https://icoplast.org/congress/",
+    "final_url": "https://icoplast.org/congress/",
+    "kind": "main",
+    "edition_id": "icoplast-2027",
+    "series_id": null,
+    "detected": "2026-11-13T11:57:02.955Z",
+    "pdf": false,
+    "added": [
+      "Name Message Phone"
+    ],
+    "removed": [
+      "Phone Email Message"
+    ]
+  }
+]
