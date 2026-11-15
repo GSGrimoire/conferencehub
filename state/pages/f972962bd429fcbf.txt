@@ -112,8 +112,8 @@ Please enable JavaScript in your browser to complete this form.
 Name *
 Email *
 Phone
-Name Email Subject
 Subject *
+Name Email Message
 Message *
 Send Message
 Or email us at:
