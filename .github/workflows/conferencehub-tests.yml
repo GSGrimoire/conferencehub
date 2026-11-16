@@ -1,0 +1,28 @@
+name: ConferenceHub tests
+on:
+  push:
+    branches: [test]
+  pull_request:
+    branches: [main, test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install PGlite
+        run: npm i --prefix /tmp/pglite @electric-sql/pglite
+      - name: Database migration and permissions tests
+        env:
+          PGLITE: /tmp/pglite/node_modules/@electric-sql/pglite/dist/index.js
+        run: node tests/db/rls.check.mjs
+      - name: Node regression tests
+        run: node --test tests/*.test.mjs
