@@ -4,6 +4,7 @@ Arbejdstitel. En kurateret oversigt over konferencer i plastik- og rekonstruktiv
 
 Pilot: Plastikkirurgisk Afdeling, Herlev Hospital (læger og sygeplejersker).
 
+- Regler for Claude og ChatGPT: [AGENTS.md](AGENTS.md)
 - Plan, beslutninger, arkitektur og status: [docs/PLAN.md](docs/PLAN.md)
 - Opgaver: Asana-projektet [ConferenceHub](https://app.asana.com/1/1199525921817881/project/1220566207179174)
 - Plandokument for version 1: https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7

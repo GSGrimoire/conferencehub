@@ -11,7 +11,7 @@ Mandag og torsdag kl. 06 dansk tid. Siderne hentes kun, når der er gået 7 dage
 ## Trin
 
 1. **Hent repo'et og skift til `test`.** `git checkout test && git pull && git merge --ff-only origin/main`.
-2. **Godkendelser.** Læs Asana-opgaven "[godkend] ConferenceHub-ændringer" i sektionen "Til Gus". For hvert id, Gus har skrevet `ja` eller `nej` ud for: `node scripts/apply.mjs --approve id1,id2` og `--reject id3`. Skriv i opgaven, hvad der er gjort, og ret aldrig Gus' svar.
+2. **Godkendelser.** Læs Asana-opgaven "[godkend] ConferenceHub-ændringer" (i "Til Gus" og i Gustav Day To Day). For hvert id, Gus har skrevet `ja` eller `nej` ud for: `node scripts/apply.mjs --approve id1,id2` og `--reject id3`. Skriv i opgaven, hvad der er gjort, og ret aldrig Gus' svar.
 3. **Overvågning.** `node scripts/watch.mjs`. Ændringer og døde links lander i `queue/<dato>.json`.
 4. **Find værdier.** For hver kommende udgave i køen eller med tomme felter: hent siderne i `links` og deres undersider på samme domæne ("Important dates", "Abstracts", "Registration"). Skriv forslag i `review/proposals.json`:
    ```json
@@ -27,7 +27,7 @@ Mandag og torsdag kl. 06 dansk tid. Siderne hentes kun, når der er gået 7 dage
 6. **Kontrol.** `node scripts/apply.mjs review/proposals.json`. Scriptet udgiver tomme felter med gyldigt citat, lægger ændringer og sider, der ikke må hentes automatisk, i `review/pending.json` og afviser resten. Afviste forslag rettes ikke ved at gætte; de nævnes i rapporten.
 7. **Test og byg.** `node --test tests/*.test.mjs && node scripts/build.mjs`. Fejler noget, stoppes der, og intet flettes til `main`.
 8. **Udgiv.** Commit på `test` med beskeden `Redaktør <dato>`, push `test`, flet `test` ind i `main` (fast-forward) og push `main`. Cloudflare bygger siden fra `main`.
-9. **Godkendelser til Gus.** Er der punkter i `review/pending.json`, opdateres én Asana-opgave "[godkend] ConferenceHub-ændringer" i ConferenceHub → "Til Gus" (tildelt Gus). Hvert punkt får id, udgave, felt, gammel og ny værdi, citat og link, og en linje "Svar (skriv ja eller nej ud for hvert id):".
+9. **Godkendelser til Gus.** Er der punkter i `review/pending.json`, opdateres én Asana-opgave "[godkend] ConferenceHub-ændringer" (tildelt Gus). Den skal ligge både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min", fordi Gus kun ser Day To Day (se AGENTS.md). Hvert punkt får id, udgave, felt, gammel og ny værdi, citat og link, og en linje "Svar (skriv ja eller nej ud for hvert id):".
 10. **Supabase.** Læs én række fra `editions` med den offentlige nøgle i `site/config.js`, så projektet ikke går i dvale.
 11. **Besked.** Skriv kun til Gus, når der venter godkendelser, eller noget er gået i stykker. Ellers ingen besked.
 

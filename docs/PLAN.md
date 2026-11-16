@@ -25,6 +25,7 @@ En kurateret oversigt over konferencer i plastik- og rekonstruktiv kirurgi, hvor
 | 16. nov. 2026 | Branches: `test` til alt nyt, `main` er det, der er online |
 | 16. nov. 2026 | Gratis drift: Cloudflare (siden) og Supabase gratis (login og database). GitHub Actions-minutterne er brugt op til 1. dec., så alt bygges og kontrolleres lokalt, og overvågningen kører i Claude-redaktørens opgave |
 | 16. nov. 2026 | Den månedlige Excel-opgave stoppes, når platformen er klar |
+| 16. nov. 2026 | Asana-opgaver til Gus lægges både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min". Gus ser kun Day To Day |
 
 ## Arkitektur
 
