@@ -19,6 +19,7 @@ const UA = "ConferenceHubBot/0.1 (+https://github.com/GSGrimoire/conferencehub)"
 const TIMEOUT_MS = 30_000;
 const DEAD_AFTER = 3;          // fejl i træk før et link meldes dødt
 const SOON_DAYS = 90;          // tætte frister/starter giver daglig kontrol
+const NORM_VERSION = 2;        // hæves, når normaliseringen ændres; første kørsel derefter er en ny basislinje
 
 const readJson = (p, fallback) => (existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : fallback);
 const writeJson = (p, v) => writeFileSync(p, JSON.stringify(v, null, 2) + "\n");
@@ -77,6 +78,9 @@ export function normalize(html) {
     .replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n))
     .split("\n").map((l) => l.replace(/\s+/g, " ").trim())
     .filter((l) => l && !/^(©|copyright)\b/i.test(l) && !/cookie/i.test(l))
+    // Korte linjer uden tal (formularfelter, menupunkter) skifter rækkefølge uden betydning.
+    // Datoer og frister har altid tal, så de bliver aldrig filtreret væk.
+    .filter((l) => /\d/.test(l) || l.split(" ").length > 4)
     .join("\n");
 }
 function lineDiff(oldText, newText) {
@@ -120,14 +124,14 @@ async function main() {
       const hash = sha(isPdf ? body : text);
       const file = `${ROOT}/state/pages/${urlId(t.url)}.txt`;
       if (!isPdf && text.length < 200) throw new Error("næsten tom side (kræver måske browserhentning)");
-      if (st.hash && st.hash !== hash) {
+      if (st.hash && st.hash !== hash && st.nv === NORM_VERSION) {
         changed++;
         const prev = !isPdf && existsSync(file) ? readFileSync(file, "utf8") : "";
         queue.push({ type: "changed", url: t.url, final_url: r.url, kind: t.kind, edition_id: t.edition_id ?? null,
           series_id: t.series_id ?? null, detected: now, pdf: isPdf, ...(isPdf ? {} : lineDiff(prev, text)) });
       }
       if (!isPdf) writeFileSync(file, text + "\n");
-      state[t.url] = { hash, checked: now, changed: st.hash !== hash ? now : st.changed, fails: 0 };
+      state[t.url] = { hash, nv: NORM_VERSION, checked: now, changed: st.hash !== hash && st.nv === NORM_VERSION ? now : st.changed, fails: 0 };
     } catch (err) {
       failed++;
       const fails = (st.fails || 0) + 1;
