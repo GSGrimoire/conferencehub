@@ -136,7 +136,7 @@
   function renderMe() {
     const sec = $("mig");
     const show = location.hash === "#mig";
-    if (!show) { sec.hidden = true; return; }
+    if (!show) { sec.hidden = true; sec.innerHTML = ""; return; } // ingen personlige data i skjult HTML
     sec.hidden = false;
     if (!me) {
       sec.innerHTML = `<h2 id="me-title">Min side</h2><p>Log ind for at se dine konferencer og grupper.</p>
@@ -190,6 +190,13 @@
             : `<p>Du har ikke meldt dig til noget endnu. Åbn en konference i listen og vælg Deltager eller Overvejer.</p>`}
         </section>
 
+        <section class="panel" aria-labelledby="me-account-title">
+          <h3 id="me-account-title">Din konto</h3>
+          <p>Se, hvad siden gemmer om dig, under <a href="privatliv.html">Privatliv</a>.</p>
+          <button class="btn danger" type="button" id="me-delete">Slet min konto</button>
+          <p class="hint">Sletter straks dit login, din profil, dine grupper og din deltagelse. Det kan ikke fortrydes.</p>
+        </section>
+
         <form id="me-suggest" class="panel">
           <h3>Foreslå en konference</h3>
           <p class="hint">Udfyld navn, link eller begge dele. Forslaget tjekkes, før det kommer på listen.</p>
@@ -227,6 +234,14 @@
       const { error } = await sb.rpc("create_group", { group_name: $("me-gname").value });
       if (error) return toast(`Kunne ikke oprette gruppen: ${error.message}`);
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
+    };
+    $("me-delete").onclick = async () => {
+      if (!confirm("Slet din konto?\n\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Det kan ikke fortrydes.")) return;
+      const { error } = await sb.rpc("delete_my_account");
+      if (error) return toast(`Kunne ikke slette kontoen: ${error.message}`);
+      await sb.auth.signOut();
+      location.hash = ""; await load();
+      toast("Din konto og dine oplysninger er slettet.");
     };
     $("me-suggest").onsubmit = async (ev) => {
       ev.preventDefault();
