@@ -24,6 +24,7 @@ Pilot: Plastikkirurgisk Afdeling, Herlev Hospital (læger og sygeplejersker).
 | `data/evidence.json` | Kilden bag hvert felt: URL og ordret citat. Vises som "kilde" på siden |
 | `review/` | `proposals.json` (redaktørens forslag), `pending.json` (venter på Gus), `decisions.json`, `last-run.md` |
 | `docs/EDITOR.md` | Redaktørens ugentlige procedure |
+| `docs/DESIGN_INSPIRATION.md` | Links til designinspiration til et fremtidigt redesign |
 | `tests/` | `node --test tests/*.test.mjs`. Databasetest af migrationerne (PGlite): se `tests/db/rls.check.mjs` |
 | `site/privatliv.html` | Privatlivsside: hvad der gemmes, hvem der ser det, og "Slet min konto" |
 | `state/` | Fingeraftryk og seneste tekst pr. overvåget side |
