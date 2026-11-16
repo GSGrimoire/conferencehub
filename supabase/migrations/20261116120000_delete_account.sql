@@ -16,7 +16,15 @@ begin
     raise exception 'Log ind for at slette din konto';
   end if;
 
-  for g in select gm.group_id from public.group_members gm where gm.user_id = me loop
+  -- Serialize membership changes and simultaneous account deletions per group.
+  for g in
+    select gm.group_id
+    from public.group_members gm
+    join public.groups grp on grp.id = gm.group_id
+    where gm.user_id = me
+    order by gm.group_id
+    for update of grp
+  loop
     if not exists (select 1 from public.group_members o where o.group_id = g.group_id and o.user_id <> me) then
       delete from public.groups where id = g.group_id;
     elsif not exists (
@@ -34,5 +42,7 @@ begin
 end;
 $$;
 
+-- Revoke the default PUBLIC EXECUTE privilege on this function only.
+-- Avoid global changes to grants shared with other Supabase applications.
 revoke all on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;
