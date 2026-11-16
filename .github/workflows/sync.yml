@@ -3,7 +3,7 @@ name: Synkronisér data til Supabase
 on:
   push:
     branches: [main]
-    paths: ["data/series.json", "data/editions.json"]
+    paths: ["data/series.json", "data/editions.json", "data/evidence.json"]
   workflow_dispatch:
 
 permissions:

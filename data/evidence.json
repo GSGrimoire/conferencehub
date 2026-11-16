@@ -1,0 +1,106 @@
+[
+  {
+    "edition_id": "icals-2027",
+    "field": "abstract_deadline",
+    "value": "2026-11-15",
+    "source_url": "https://www.icals2027.com/",
+    "quote": "Abstract submission deadline: November 15, 2026",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "icals-2027",
+    "field": "start",
+    "value": "2027-03-04",
+    "source_url": "https://www.icals2027.com/",
+    "quote": "March 4–6, 2027 – Rome, Italy",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "icals-2027",
+    "field": "end",
+    "value": "2027-03-06",
+    "source_url": "https://www.icals2027.com/",
+    "quote": "March 4–6, 2027 – Rome, Italy",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "dusseldorf-breast-meeting-2027",
+    "field": "abstract_deadline",
+    "value": "2027-01-30",
+    "source_url": "https://dusseldorf-breast-meeting.com/en/call-for-abstracts",
+    "quote": "Deadline January 30, 2027, 11:59 p.m. CET",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "dusseldorf-breast-meeting-2027",
+    "field": "start",
+    "value": "2027-04-09",
+    "source_url": "https://dusseldorf-breast-meeting.com/en/call-for-abstracts",
+    "quote": "Congress April 9–10, 2027, Düsseldorf",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "ibsw-2027",
+    "field": "start",
+    "value": "2027-04-22",
+    "source_url": "https://ibsw.it/",
+    "quote": "taking place in the historic city of Athens, Greece , on 22–24 April 2027",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "ibsw-2027",
+    "field": "end",
+    "value": "2027-04-24",
+    "source_url": "https://ibsw.it/",
+    "quote": "taking place in the historic city of Athens, Greece , on 22–24 April 2027",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "wsrm-2027",
+    "field": "abstract_deadline",
+    "value": "2026-12-01",
+    "source_url": "https://www.wsrm2027.com/important-dates/",
+    "quote": "1 December 2026 Abstract Submission Deadline",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "wsrm-2027",
+    "field": "early_bird_deadline",
+    "value": "2027-03-15",
+    "source_url": "https://www.wsrm2027.com/important-dates/",
+    "quote": "15 March 2027 Early Bird Registration Deadline",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "wsrm-2027",
+    "field": "start",
+    "value": "2027-06-03",
+    "source_url": "https://www.wsrm2027.com/",
+    "quote": "3 — 5 June 2027 · Lütfi Kırdar ICEC · Istanbul, Türkiye",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "icoplast-2027",
+    "field": "start",
+    "value": "2027-06-24",
+    "source_url": "https://icoplast.org/congress/",
+    "quote": "will take place in Berlin, Germany 24 – 26 June 2027",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "eba-2027",
+    "field": "start",
+    "value": "2027-09-15",
+    "source_url": "https://www.euroburn.org/event/22nd-eba-congress/",
+    "quote": "15 Sep 2027 - 18 Sep 2027",
+    "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "eba-2027",
+    "field": "end",
+    "value": "2027-09-18",
+    "source_url": "https://www.euroburn.org/event/22nd-eba-congress/",
+    "quote": "15 Sep 2027 - 18 Sep 2027",
+    "fetched_at": "2026-11-16"
+  }
+]

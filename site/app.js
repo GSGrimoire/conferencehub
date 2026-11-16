@@ -58,7 +58,7 @@ function inDays(n) {
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 // ---------- tilstand ----------
-const state = { editions: [], series: {}, topic: "all", q: "", today: todayDay() };
+const state = { editions: [], series: {}, evidence: {}, topic: "all", q: "", today: todayDay() };
 window.CH = { state, dayOf, fmtRange, esc };
 
 function nextDeadline(e) {
@@ -126,12 +126,17 @@ function row(e) {
   else if (nd) next = `<span class="${nd.days <= SOON_DAYS ? "soon" : ""}">${nd.short} ${nd.days <= SOON_DAYS ? inDays(nd.days) : fmtDate(nd.iso)}</span>`;
   else next = `<span class="none">Ingen kendt frist</span>`;
 
-  const dl = [["Dato", fmtRange(e.start, e.end)], ["Sted", e.venue || "Ikke offentliggjort"]];
+  // Kilde pr. felt: ordret citat fra konferencens egen side (data/evidence.json).
+  const src = (field) => {
+    const ev = state.evidence[`${e.id}|${field}`];
+    return ev ? ` <a class="src" href="${esc(ev.source_url)}" rel="noopener" title="&#8220;${esc(ev.quote)}&#8221;">kilde</a>` : "";
+  };
+  const dl = [["Dato", esc(fmtRange(e.start, e.end)) + src("start")], ["Sted", esc(e.venue || "Ikke offentliggjort") + src("venue")]];
   for (const [field, label] of DEADLINES) {
     const note = (e.deadline_notes || {})[field.replace("_deadline", "")];
     if (e[field]) {
       const passed = dayOf(e[field]) < state.today;
-      dl.push([label, `<span class="${passed ? "expired" : ""}">${fmtDate(e[field])}</span>${passed ? " (udløbet)" : ""}`]);
+      dl.push([label, `<span class="${passed ? "expired" : ""}">${fmtDate(e[field])}</span>${passed ? " (udløbet)" : ""}${src(field)}`]);
     } else if (note) dl.push([label, esc(note)]);
   }
   if (e.note) dl.push(["Note", esc(e.note)]);
@@ -144,13 +149,13 @@ function row(e) {
       <div class="next">${next}<span class="crowd" data-ed="${esc(e.id)}"></span></div>
     </summary>
     <div class="detail">
-      <dl>${dl.map(([k, v]) => `<dt>${k}</dt><dd>${k === "Dato" || k === "Sted" ? esc(v) : v}</dd>`).join("")}</dl>
+      <dl>${dl.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
       <div class="mine" data-ed="${esc(e.id)}" data-past="${isPast ? 1 : 0}"></div>
       <div class="actions">
         ${isPast ? "" : `<button class="btn" type="button" data-ics="${esc(e.id)}">Føj til kalender</button>`}
         ${links}
       </div>
-      <p class="source">Serie: ${esc(s.name || e.series)}. Kilde: ${esc(e.source || "ukendt")}.</p>
+      <p class="source">Serie: ${esc(s.name || e.series)}. ${e.last_verified_at ? `Sidst bekræftet på konferencens egen side ${fmtDate(e.last_verified_at)}.` : `Kilde: ${esc(e.source || "ukendt")}.`}</p>
     </div>
   </details></li>`;
 }
@@ -248,9 +253,14 @@ function openFromHash() {
 window.addEventListener("hashchange", openFromHash);
 
 // ---------- start ----------
-Promise.all([fetch("data/editions.json").then((r) => r.json()), fetch("data/series.json").then((r) => r.json())])
-  .then(([editions, series]) => {
+Promise.all([
+  fetch("data/editions.json").then((r) => r.json()),
+  fetch("data/series.json").then((r) => r.json()),
+  fetch("data/evidence.json").then((r) => (r.ok ? r.json() : [])).catch(() => []),
+])
+  .then(([editions, series, evidence]) => {
     state.editions = editions;
+    state.evidence = Object.fromEntries(evidence.map((x) => [`${x.edition_id}|${x.field}`, x]));
     state.series = Object.fromEntries(series.map((s) => [s.id, s]));
     renderChips();
     render();

@@ -1,9 +1,14 @@
-// ConferenceHub, fase 2, trin 1: daglig ændringsdetektion.
+// ConferenceHub, fase 2, trin 1: ugentlig ændringsdetektion.
 // Henter hver overvåget side, normaliserer teksten, sammenligner med sidste version
-// og lægger ændringer i queue/ til Claude-redaktøren. Kører i GitHub Actions (Node 20+).
+// og lægger ændringer i queue/ til Claude-redaktøren. Kører i Claude-redaktørens
+// ugentlige planlagte opgave (se docs/EDITOR.md), så den ikke afhænger af GitHub Actions.
 //
 //   node scripts/watch.mjs            normal kørsel
-//   WATCH_ALL=1 node scripts/watch.mjs   ignorér intervaller (fx første kørsel)
+//   WATCH_ALL=1 node scripts/watch.mjs   ignorér intervaller og rotation (fx første kørsel)
+//
+// Hyppighed (besluttet 16. nov. 2026): alle kommende udgaver tjekkes ugentligt. Når der er
+// flere end ROTATE_ABOVE aktive udgaver, deles de i hold, og hver kørsel tager ét hold.
+// Udgaver med frist eller start inden for SOON_DAYS tjekkes altid.
 //
 // Filer:
 //   data/watch.json         overvågningslisten (redigeres af mennesker og Claude)
@@ -15,10 +20,11 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 
 const ROOT = process.env.CH_ROOT || ".";
-const UA = "ConferenceHubBot/0.1 (+https://github.com/GSGrimoire/conferencehub)";
+export const UA = "ConferenceHubBot/0.1 (+https://github.com/GSGrimoire/conferencehub)";
 const TIMEOUT_MS = 30_000;
 const DEAD_AFTER = 3;          // fejl i træk før et link meldes dødt
-const SOON_DAYS = 90;          // tætte frister/starter giver daglig kontrol
+const SOON_DAYS = 42;          // frist eller start inden for 6 uger: tjekkes i hver kørsel, også ved rotation
+const ROTATE_ABOVE = 160;      // flere aktive udgaver end dette: del i hold, ét hold pr. kørsel
 const NORM_VERSION = 2;        // hæves, når normaliseringen ændres; første kørsel derefter er en ny basislinje
 
 const readJson = (p, fallback) => (existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : fallback);
@@ -29,24 +35,43 @@ const today = process.env.CH_TODAY || new Date().toISOString().slice(0, 10);
 const dayOf = (iso) => Date.parse(iso + "T00:00:00Z") / 864e5;
 
 // ---------- hvornår skal en side tjekkes ----------
-function isDue(target, edition, st) {
-  if (process.env.WATCH_ALL) return true;
-  if (edition && dayOf(edition.end_date || edition.end || edition.start) < dayOf(today)) return false; // overstået
-  const last = st?.checked ? dayOf(st.checked.slice(0, 10)) : -Infinity;
-  const interval = target.interval || (needsDaily(edition) ? "daily" : "weekly");
-  return dayOf(today) - last >= (interval === "daily" ? 1 : 7);
+const isPast = (e) => !!e && dayOf(e.end || e.start) < dayOf(today);
+const soon = (iso) => !!iso && dayOf(iso) >= dayOf(today) && dayOf(iso) - dayOf(today) <= SOON_DAYS;
+export function isSoon(e) {
+  return !!e && ["abstract_deadline", "early_bird_deadline", "registration_deadline", "start"].some((f) => soon(e[f]));
 }
-function needsDaily(e) {
-  if (!e) return true; // seriesider (jagt på næste udgave)
-  const fields = ["abstract_deadline", "early_bird_deadline", "registration_deadline"];
-  if (fields.some((f) => !e[f]) || !e.venue) return true;
-  const soon = (iso) => iso && dayOf(iso) - dayOf(today) <= SOON_DAYS;
-  return fields.some((f) => soon(e[f])) || soon(e.start);
+// Holdnummer for en udgave eller serie: stabilt, så den samme side altid hører til samme hold.
+export function holdOf(key, holds) {
+  return parseInt(sha(String(key)).slice(0, 8), 16) % holds;
+}
+// ISO-ugenummer bestemmer, hvilket hold der er på i denne kørsel.
+export function isoWeek(iso) {
+  const d = new Date(iso + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const jan1 = Date.UTC(d.getUTCFullYear(), 0, 1);
+  return Math.ceil(((d - jan1) / 864e5 + 1) / 7);
+}
+export function isDue(target, edition, st, rotation) {
+  if (process.env.WATCH_ALL) return !isPast(edition);
+  if (isPast(edition)) return false; // overstået: jagten på næste udgave sker via seriesider og redaktøren
+  if (rotation && !isSoon(edition)) {
+    const key = target.edition_id || target.series_id || target.url;
+    if (holdOf(key, rotation.holds) !== rotation.current) return false;
+  }
+  const last = st?.checked ? dayOf(st.checked.slice(0, 10)) : -Infinity;
+  const days = target.interval === "daily" ? 1 : 7; // "daily" kan sættes manuelt på en enkelt side
+  return dayOf(today) - last >= days;
+}
+export function rotationFor(editions) {
+  const active = editions.filter((e) => !isPast(e)).length;
+  if (active <= ROTATE_ABOVE) return null;
+  const holds = Math.ceil(active / ROTATE_ABOVE);
+  return { holds, current: isoWeek(today) % holds, active };
 }
 
 // ---------- robots.txt (enkel fortolkning af "User-agent: *") ----------
 const robotsCache = new Map();
-async function allowed(url) {
+export async function allowed(url) {
   const u = new URL(url);
   if (!robotsCache.has(u.origin)) {
     let rules = [];
@@ -68,7 +93,9 @@ async function allowed(url) {
 }
 
 // ---------- normalisering ----------
-export function normalize(html) {
+// HTML til tekstlinjer uden at filtrere noget fra. Bruges også af redaktørens citatkontrol
+// (scripts/apply.mjs), som skal kunne finde korte etiketter som "Abstract deadline".
+export function htmlToLines(html) {
   return html
     .replace(/<(script|style|noscript|svg|iframe|template)[\s\S]*?<\/\1>/gi, " ")
     .replace(/<!--[\s\S]*?-->/g, " ")
@@ -77,7 +104,11 @@ export function normalize(html) {
     .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n))
     .split("\n").map((l) => l.replace(/\s+/g, " ").trim())
-    .filter((l) => l && !/^(©|copyright)\b/i.test(l) && !/cookie/i.test(l))
+    .filter(Boolean);
+}
+export function normalize(html) {
+  return htmlToLines(html)
+    .filter((l) => !/^(©|copyright)\b/i.test(l) && !/cookie/i.test(l))
     // Korte linjer uden tal (formularfelter, menupunkter) skifter rækkefølge uden betydning.
     // Datoer og frister har altid tal, så de bliver aldrig filtreret væk.
     .filter((l) => /\d/.test(l) || l.split(" ").length > 4)
@@ -94,7 +125,10 @@ function lineDiff(oldText, newText) {
 // ---------- kørsel ----------
 async function main() {
   const watch = readJson(`${ROOT}/data/watch.json`, []);
-  const editions = Object.fromEntries(readJson(`${ROOT}/data/editions.json`, []).map((e) => [e.id, e]));
+  const editionList = readJson(`${ROOT}/data/editions.json`, []);
+  const editions = Object.fromEntries(editionList.map((e) => [e.id, e]));
+  const rotation = rotationFor(editionList);
+  if (rotation) console.log(`${rotation.active} aktive udgaver: hold ${rotation.current + 1} af ${rotation.holds} i denne kørsel.`);
   const state = readJson(`${ROOT}/state/watch-state.json`, {});
   mkdirSync(`${ROOT}/state/pages`, { recursive: true });
   mkdirSync(`${ROOT}/queue`, { recursive: true });
@@ -106,7 +140,7 @@ async function main() {
   for (const t of watch) {
     const ed = t.edition_id ? editions[t.edition_id] : null;
     const st = state[t.url] || {};
-    if (!isDue(t, ed, st)) { skipped++; continue; }
+    if (!isDue(t, ed, st, rotation)) { skipped++; continue; }
     if (t.mode === "browser") { skipped++; continue; } // browserhentning kommer i næste trin
     if (!(await allowed(t.url))) {
       // Meldes kun første gang; siden må derefter tjekkes manuelt af Claude-redaktøren.

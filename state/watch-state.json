@@ -1,49 +1,55 @@
 {
   "https://www.icals2027.com/": {
-    "hash": "1fa03076a103d990aedc8133b656d86e263b59abd9aa769f3a251618dfd07f0d",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "8e6bca547d103251415189742eac0cbb34f03a7c6b88c3e974c07be1ba39beeb",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-15T11:49:07.342Z",
     "fails": 0
   },
   "https://dusseldorf-breast-meeting.com/en/call-for-abstracts": {
-    "hash": "eedfb5c5c0cc62ebc82432d7b8eb120eaa451e8c3e821bde77726cc37d6b26c4",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "2792a03742bf6c64a969db1a41ec358c7da99e9ed1913d491f422903d8b32c7d",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://ibsw.it/": {
-    "hash": "f7014d298864b342b8a0076a37be9285acf04ecc52e73020f69a6336a7792dae",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "604f6264937d365945afcec3703ee26df8f1e445205b94db83bf28c918bab139",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://www.euraps.org/meetings/upcoming-meeting/": {
-    "hash": "f9a53187bfcaf682a45de4afd389dfa73e479c5da2a4f583021e37b5d716d1a9",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "cd547e5fb81669ed7a27d6d4fb713e8d221a0173ea7ef1771d382323eef4bd3b",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-09T05:54:05.163Z",
     "fails": 0
   },
   "https://www.wsrm2027.com/": {
-    "hash": "aabcd7407a2917b528b57b928e1386c822297367a385d3ec74f19f3411b1b035",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "fbf0dae735dfee012fe074856c10271bebe3844e775817a13eb2330a9f2dec98",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-09T05:54:05.163Z",
-    "fails": 6,
-    "last_error": "HTTP 403"
+    "fails": 0
   },
   "https://icoplast.org/congress/": {
-    "hash": "841c7f3bef94d76352336c01a44bd2c90cde287d2397d8f17e69399f5992584e",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "037730b1d2a7a078df57ab0009c19969c1eb63d1c405e0fd4246b3ab17192761",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-15T11:49:07.342Z",
     "fails": 0
   },
   "https://www.euroburn.org/event/22nd-eba-congress/": {
-    "hash": "7bcc2671095bb4cddb97ac0bf1cfd5fd311e35c634a870588c5a5ca1baa4746b",
-    "checked": "2026-11-15T11:49:07.342Z",
+    "hash": "d37e37d03256c77e9ec483bab1749264926f075c62e1b12b04f29677cce76494",
+    "nv": 2,
+    "checked": "2026-11-16T11:45:29.760Z",
     "changed": "2026-11-12T12:19:19.646Z",
     "fails": 0
   },
   "https://bbm.cat/": {
     "blocked": true,
-    "checked": "2026-11-15T11:49:07.342Z"
+    "checked": "2026-11-16T11:45:29.760Z"
   }
 }

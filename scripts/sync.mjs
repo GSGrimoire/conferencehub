@@ -1,5 +1,5 @@
-// ConferenceHub: synkroniserer data/series.json og data/editions.json til Supabase.
-// Kører i .github/workflows/sync.yml efter hvert push til data/.
+// ConferenceHub: synkroniserer data/series.json, data/editions.json og data/evidence.json til Supabase.
+// Kører i .github/workflows/sync.yml efter hvert push til data/ (når der er GitHub Actions-minutter).
 // Kræver repo-secrets SUPABASE_URL og SUPABASE_SECRET_KEY (service role / secret key).
 
 import { readFileSync } from "node:fs";
@@ -26,6 +26,15 @@ const editions = read("data/editions.json").map((e) => ({
   last_verified_at: e.last_verified_at ?? null, updated_at: new Date().toISOString(),
 }));
 
+const headers = () => ({
+  apikey: key, "content-type": "application/json",
+  ...(key.startsWith("eyJ") ? { authorization: `Bearer ${key}` } : {}),
+});
+const evidence = (() => { try { return read("data/evidence.json"); } catch { return []; } })().map((x) => ({
+  edition_id: x.edition_id, field: x.field, value: x.value ?? null, source_url: x.source_url, quote: x.quote,
+  fetched_at: x.fetched_at,
+}));
+
 async function upsert(table, rows) {
   const r = await fetch(`${url}/rest/v1/${table}?on_conflict=id`, {
     method: "POST",
@@ -43,3 +52,14 @@ async function upsert(table, rows) {
 
 await upsert("series", series);   // serier først, udgaverne peger på dem
 await upsert("editions", editions);
+
+// Kilderne erstattes helt: slet alle rækker, indsæt den aktuelle liste.
+{
+  const del = await fetch(`${url}/rest/v1/evidence?id=gt.0`, { method: "DELETE", headers: { ...headers(), prefer: "return=minimal" } });
+  if (!del.ok) throw new Error(`evidence (slet): HTTP ${del.status} ${await del.text()}`);
+  if (evidence.length) {
+    const ins = await fetch(`${url}/rest/v1/evidence`, { method: "POST", headers: { ...headers(), prefer: "return=minimal" }, body: JSON.stringify(evidence) });
+    if (!ins.ok) throw new Error(`evidence: HTTP ${ins.status} ${await ins.text()}`);
+  }
+  console.log(`evidence: ${evidence.length} rækker synkroniseret`);
+}

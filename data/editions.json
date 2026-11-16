@@ -295,7 +295,7 @@
     "start": "2027-03-04",
     "end": "2027-03-06",
     "venue": "TH Roma – Carpegna Palace Hotel, Rom, Italien",
-    "abstract_deadline": null,
+    "abstract_deadline": "2026-11-15",
     "early_bird_deadline": null,
     "registration_deadline": null,
     "deadline_notes": {},
@@ -307,7 +307,8 @@
     ],
     "note": "Abstract max 300 ord. Accepterede abstracts giver reduceret deltagergebyr",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   },
   {
     "id": "barcelona-breast-meeting-2027",
@@ -351,7 +352,8 @@
     ],
     "note": "Første udgave. Rekonstruktiv, onkologisk og æstetisk brystkirurgi. Abstract åbnede 19-10-2026, frist kl. 23.59 CET. Tilmelding: dusseldorf-breast-meeting.com/en/book",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   },
   {
     "id": "ibsw-2027",
@@ -373,7 +375,8 @@
     ],
     "note": "Hvert andet år. Fokus på minimalt invasiv og robotassisteret brystkirurgi",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   },
   {
     "id": "euraps-2027",
@@ -405,8 +408,8 @@
     "start": "2027-06-03",
     "end": "2027-06-05",
     "venue": "Lütfi Kırdar Congress Center, Istanbul, Tyrkiet",
-    "abstract_deadline": null,
-    "early_bird_deadline": null,
+    "abstract_deadline": "2026-12-01",
+    "early_bird_deadline": "2027-03-15",
     "registration_deadline": null,
     "deadline_notes": {},
     "links": [
@@ -417,7 +420,8 @@
     ],
     "note": "Hvert andet år",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   },
   {
     "id": "icoplast-2027",
@@ -439,7 +443,8 @@
     ],
     "note": "Vært: DGPRÄC. DSPR er ICOPLAST-medlem",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   },
   {
     "id": "eba-2027",
@@ -461,6 +466,7 @@
     ],
     "note": "Hvert andet år. Sted ikke annonceret. EMSB-kursus i Antwerpen 14-09-2027",
     "status": "confirmed",
-    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026"
+    "source": "conference-calendar skill, sidst verificeret okt.–nov. 2026",
+    "last_verified_at": "2026-11-16"
   }
 ]

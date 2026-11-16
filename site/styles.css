@@ -95,6 +95,7 @@ details[open] .chev { transform: rotate(90deg); }
   border: 2px solid var(--marker); background: var(--sheet); color: var(--marker); }
 .btn:hover { background: var(--marker-tint); }
 .source { font-size: .875rem; color: var(--ink-soft); margin: .75rem 0 0; }
+.src { font-size: .8125rem; margin-left: .35rem; color: var(--ink-soft); }
 
 .past > summary { cursor: pointer; list-style: none; }
 .past > summary::-webkit-details-marker { display: none; }

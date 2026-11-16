@@ -1,8 +1,8 @@
-name: Daglig overvågning
+name: Overvågning (manuel reserve)
 
+# Den ugentlige overvågning kører i Claude-redaktørens planlagte opgave (docs/EDITOR.md),
+# så den ikke bruger GitHub Actions-minutter. Denne workflow kan startes manuelt som reserve.
 on:
-  schedule:
-    - cron: "0 4 * * *"   # 05:00 dansk vintertid, 06:00 sommertid
   workflow_dispatch:
     inputs:
       all:
