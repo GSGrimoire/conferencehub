@@ -194,7 +194,7 @@
           <h3 id="me-account-title">Din konto</h3>
           <p>Se, hvad siden gemmer om dig, under <a href="privatliv.html">Privatliv</a>.</p>
           <button class="btn danger" type="button" id="me-delete">Slet min konto</button>
-          <p class="hint">Sletter straks dit login, din profil, dine grupper og din deltagelse. Det kan ikke fortrydes.</p>
+          <p class="hint"><strong>Vigtigt:</strong> Hvis du også bruger GS QR Bar med samme Supabase-login, vil du miste din adgang til GS QR Bar, når du sletter kontoen her. Kontosletning kan ikke fortrydes.</p>
         </section>
 
         <form id="me-suggest" class="panel">
@@ -236,7 +236,7 @@
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
     };
     $("me-delete").onclick = async (ev) => {
-      if (!confirm("Slet din konto?\n\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Forslag beholdes uden kontotilknytning. Det kan ikke fortrydes.")) return;
+      if (!confirm("ADVARSEL: Slet din konto?\n\nDette sletter dit fælles Supabase-login. Hvis du bruger samme login til GS QR Bar, mister du OGSÅ din adgang til GS QR Bar.\n\nDin profil, dine gruppemedlemskaber og din deltagelse i ConferenceHub slettes. Forslag beholdes uden kontotilknytning. GS QR Bars links og statistik slettes ikke nødvendigvis.\n\nDet kan ikke fortrydes. Vil du fortsætte?")) return;
       const button = ev.currentTarget;
       button.disabled = true;
       let error;
