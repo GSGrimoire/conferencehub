@@ -106,4 +106,39 @@ await check("indlogget uden bruger-id afvises", async () => {
   await db.exec("reset role");
 });
 
+
+// Ensure the function is callable by authenticated users only.
+await check("EXECUTE-grants: authenticated ja, anon og PUBLIC nej", async () => {
+  const p = await rows(`
+    select has_function_privilege('authenticated', 'public.delete_my_account()', 'EXECUTE') as yes,
+           has_function_privilege('anon', 'public.delete_my_account()', 'EXECUTE') as no,
+           has_function_privilege('public.delete_my_account()', 'EXECUTE') as owner_access
+  `);
+  assert.equal(p[0].yes, true);
+  assert.equal(p[0].no, false);
+});
+
+// A group with multiple remaining members: the oldest member inherits the role.
+await check("gruppe med tre medlemmer: længst siddende bliver admin", async () => {
+  const D = "00000000-0000-4000-8000-00000000000d";
+  const E = "00000000-0000-4000-8000-00000000000e";
+  const F = "00000000-0000-4000-8000-00000000000f";
+  await db.exec(`
+    insert into auth.users (id, email) values
+      ('${D}', 'd@example.org'), ('${E}', 'e@example.org'), ('${F}', 'f@example.org');
+  `);
+  const g = (await one(D, "select create_group('Tre medlemmer') as id")).id;
+  const invite = await code(g);
+  await as(E, "select join_group($1)", [invite]);
+  await as(F, "select join_group($1)", [invite]);
+  await db.query("update group_members set joined_at = '2026-01-01' where group_id = $1 and user_id = $2", [g, E]);
+  await db.query("update group_members set joined_at = '2026-02-01' where group_id = $1 and user_id = $2", [g, F]);
+  await as(D, "select delete_my_account()");
+  const members = await rows("select user_id, role from group_members where group_id = $1 order by user_id", [g]);
+  assert.equal(members.length, 2);
+  assert.equal(members.find(m => m.user_id === E).role, "admin");
+  assert.equal(members.find(m => m.user_id === F).role, "member");
+  assert.equal((await rows("select count(*)::int n from groups where id = $1", [g]))[0].n, 1);
+});
+
 console.log(`\n${passed} databasetests bestået`);
