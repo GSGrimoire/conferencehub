@@ -235,13 +235,35 @@
       if (error) return toast(`Kunne ikke oprette gruppen: ${error.message}`);
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
     };
-    $("me-delete").onclick = async () => {
-      if (!confirm("Slet din konto?\n\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Det kan ikke fortrydes.")) return;
-      const { error } = await sb.rpc("delete_my_account");
-      if (error) return toast(`Kunne ikke slette kontoen: ${error.message}`);
-      await sb.auth.signOut();
-      location.hash = ""; await load();
-      toast("Din konto og dine oplysninger er slettet.");
+    $("me-delete").onclick = async (ev) => {
+      if (!confirm("Slet din konto?\\n\\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Forslag beholdes uden kontotilknytning. Det kan ikke fortrydes.")) return;
+      const button = ev.currentTarget;
+      button.disabled = true;
+      let error;
+      try {
+        ({ error } = await sb.rpc("delete_my_account"));
+      } catch (err) {
+        error = err;
+      }
+      if (error) {
+        button.disabled = false;
+        return toast(`Kunne ikke slette kontoen: ${error.message || "Netværksfejl"}`);
+      }
+      // Database deletion succeeded. A subsequent sign-out failure does not undo it.
+      try {
+        const { error: signOutError } = await sb.auth.signOut({ scope: "local" });
+        if (signOutError) throw signOutError;
+      } catch (err) {
+        console.warn("Lokal logout efter kontosletning mislykkedes", err);
+      }
+      me = null;
+      profile = null;
+      groups = [];
+      mine.clear();
+      location.hash = "";
+      try { await load(); } catch (err) { console.warn("Genindlæsning efter kontosletning fejlede", err); }
+      renderMe();
+      toast("Kontoen er slettet. Hvis du fortsat vises som logget ind, skal du logge ud eller genindlæse siden.");
     };
     $("me-suggest").onsubmit = async (ev) => {
       ev.preventDefault();
