@@ -26,8 +26,11 @@ En kurateret oversigt over konferencer i plastik- og rekonstruktiv kirurgi, hvor
 | 16. nov. 2026 | Gratis drift: Cloudflare (siden) og Supabase gratis (login og database). GitHub Actions-minutterne er brugt op til 1. dec., så alt bygges og kontrolleres lokalt, og overvågningen kører i Claude-redaktørens opgave |
 | 16. nov. 2026 | Den månedlige Excel-opgave stoppes, når platformen er klar |
 | 16. nov. 2026 | Asana-opgaver til Gus lægges både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min". Gus ser kun Day To Day |
+| 16. nov. 2026 | Behold Supabase til SurgicalConferenceHub og GS QR Bar foreløbigt, uden tidlig opdeling. Ved delt `auth.users` fjerner kontosletning også GS QR Bar-login. Kræv tydelig advarsel, teknisk verifikation og uafhængig sikkerhedsreview før lancering. [Beslutningsnotat](decisions/0001-shared-supabase.md) |
 
 ## Arkitektur
+
+**Tværgående loginbeslutning:** Se [beslutning 0001 om fælles Supabase](decisions/0001-shared-supabase.md). Det er endnu ikke bekræftet fra begge aktive applikationers konfiguration, om brugerregistret faktisk deles. Den eksisterende GS QR Bar-opsætning og Supabase-GitHub-adgang bevares. Kontosletning skal advare om konsekvensen for GS QR Bar og integrationstestes før `main`.
 
 ```
 Konferencesider ──► Claude-redaktør, mandag og torsdag (docs/EDITOR.md)
