@@ -236,7 +236,7 @@
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
     };
     $("me-delete").onclick = async (ev) => {
-      if (!confirm("Slet din konto?\\n\\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Forslag beholdes uden kontotilknytning. Det kan ikke fortrydes.")) return;
+      if (!confirm("Slet din konto?\n\nDit login, din profil, dine gruppemedlemskaber og din deltagelse slettes straks. Forslag beholdes uden kontotilknytning. Det kan ikke fortrydes.")) return;
       const button = ev.currentTarget;
       button.disabled = true;
       let error;
