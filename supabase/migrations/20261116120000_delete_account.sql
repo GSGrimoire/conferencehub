@@ -1,8 +1,9 @@
 -- ConferenceHub: "Slet min konto" (GDPR: retten til sletning).
 -- En indlogget bruger kan kun slette sig selv. Sletningen fjerner login (auth.users),
 -- profil, gruppemedlemskaber, deltagelse og fulgte serier (on delete cascade).
--- Forslag beholdes uden afsender (on delete set null). Produktregel: konferencenavn og link
--- bevares, men fritekstfeltet note slettes først, fordi det kan indeholde personoplysninger.
+-- Forslag: brugerens egne forslag slettes helt. Navn, link og note er fri tekst fra brugeren
+-- og kan alle identificere afsenderen, så intet af forslaget bevares (review 18. nov., issue #1).
+-- on delete set null på suggestions.user_id er kun et sikkerhedsnet; rækkerne er væk før det.
 -- Grupper: er brugeren eneste admin, bliver det længst siddende medlem admin;
 -- er brugeren eneste medlem, slettes gruppen med sin invitationskode.
 
@@ -39,8 +40,8 @@ begin
     end if;
   end loop;
 
-  -- Notes are free text and may identify the sender; keep only conference name and link.
-  update public.suggestions set note = null where user_id = me;
+  -- Name, url and note are all free text and may identify the sender: delete the whole row.
+  delete from public.suggestions where user_id = me;
 
   delete from auth.users where id = me;
 end;

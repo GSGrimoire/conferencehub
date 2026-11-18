@@ -236,7 +236,7 @@
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
     };
     $("me-delete").onclick = async (ev) => {
-      if (!confirm("ADVARSEL: Slet din konto?\n\nDette sletter dit fælles Supabase-login. Hvis du bruger samme login til GS QR Bar, mister du OGSÅ din adgang til GS QR Bar.\n\nDin profil, dine gruppemedlemskaber og din deltagelse i ConferenceHub slettes. Forslag beholdes uden kontotilknytning og uden din note. GS QR Bars links og statistik slettes ikke nødvendigvis.\n\nDet kan ikke fortrydes. Vil du fortsætte?")) return;
+      if (!confirm("ADVARSEL: Slet din konto?\n\nDette sletter dit fælles Supabase-login. Hvis du bruger samme login til GS QR Bar, mister du OGSÅ din adgang til GS QR Bar.\n\nDin profil, dine gruppemedlemskaber og din deltagelse i ConferenceHub slettes. Forslag, du har sendt, slettes også. GS QR Bars links og statistik slettes ikke nødvendigvis.\n\nDet kan ikke fortrydes. Vil du fortsætte?")) return;
       const button = ev.currentTarget;
       button.disabled = true;
       let error;

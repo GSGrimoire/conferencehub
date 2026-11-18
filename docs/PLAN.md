@@ -81,6 +81,6 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 | Fase 2: redaktørens kontrol og godkendelsesliste | Bygget og testet lokalt 16. nov. |
 | Fase 2: redaktøren som planlagt opgave, seriesider, browserhentning | Mangler |
 | Fase 3 beta: login, grupper, deltagelse, Vis aktivitet, forslag | Bygget; Google-login er ikke slået til i Supabase (16. nov.: "provider is not enabled") |
-| Privatlivsside og "slet min konto" | 18. nov.: forslagsnoter slettes med kontoen, 17 databasetests bestået lokalt (`claude/issue-1-delete-account`). Venter på uafhængig review (issue #1). Supabase-kontrollen er udskudt af Gus 18. nov. (ingen brugere endnu); region og behandlingsgrundlag er stadig åbne. Ikke på `main`, går ikke live før kontrollen er kørt |
+| Privatlivsside og "slet min konto" | 18. nov.: brugerens forslag slettes helt med kontoen (navn, link og note; review fra ChatGPT 18. nov.), 17 databasetests bestået lokalt (`claude/issue-1-delete-account`). Venter på uafhængig review (issue #1). Supabase-kontrollen er udskudt af Gus 18. nov. (ingen brugere endnu); region og behandlingsgrundlag er stadig åbne. Ikke på `main`, går ikke live før kontrollen er kørt |
 | Mail-login, personligt kalenderfeed, admin-side | Mangler |
 | Supabase-synkronisering | Venter på GitHub Actions-minutter (1. dec.); siden læser data direkte fra repo'et og påvirkes ikke |

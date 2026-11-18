@@ -22,9 +22,12 @@ test("kontosletning forklares ved knappen og på privatlivssiden", () => {
   assert.match(privacy, /QR-links, kampagner eller statistik/);
 });
 
-test("forslagenes note slettes med kontoen, og teksten siger det", () => {
+test("brugerens forslag slettes helt med kontoen, og teksten siger det", () => {
   const sql = readFileSync(new URL("../supabase/migrations/20261116120000_delete_account.sql", import.meta.url), "utf8");
-  assert.match(sql, /update public\.suggestions set note = null where user_id = me;/);
-  assert.match(auth, /uden kontotilknytning og uden din note/);
-  assert.match(privacy, /mens din note slettes/);
+  assert.match(sql, /delete from public\.suggestions where user_id = me;/);
+  assert.doesNotMatch(sql, /update public\.suggestions/);
+  assert.match(auth, /Forslag, du har sendt, slettes også\./);
+  assert.doesNotMatch(auth, /uden din note/);
+  assert.match(privacy, /slettes helt: navn, link og note/);
+  assert.doesNotMatch(privacy, /beholdes uden kontotilknytning/);
 });

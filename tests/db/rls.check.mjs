@@ -59,6 +59,7 @@ await as(A, "select join_group($1)", [await code(g3)]);
 await as(A, "insert into attendance (user_id, edition_id, status) values ($1, 'x-2027', 'going')", [A]);
 await as(B, "insert into attendance (user_id, edition_id, status) values ($1, 'x-2027', 'considering')", [B]);
 await as(A, "insert into suggestions (user_id, name, url, note) values ($1, 'Ny konference', 'https://example.org/ny', 'Skriv til anna@example.org')", [A]);
+await as(A, "insert into suggestions (user_id, name, url) values ($1, 'Anna Jensen anna@example.org', 'https://example.org/~anna-jensen/cv')", [A]);
 await as(B, "insert into suggestions (user_id, name, note) values ($1, 'Bs konference', 'Bs note')", [B]);
 
 await check("profil oprettes af triggeren med navn fra Google", async () => {
@@ -95,15 +96,15 @@ await check("grupper: B arver admin i G1, G2 slettes, G3 er uændret", async () 
   assert.equal((await rows("select count(*)::int n from group_members where group_id = $1", [g3]))[0].n, 1);
 });
 
-await check("forslag beholdes uden afsender og uden note; andres forslag er uændrede", async () => {
-  const s = await rows("select user_id, name, url, note from suggestions where name = 'Ny konference'");
-  assert.equal(s.length, 1);
-  assert.equal(s[0].user_id, null);
-  assert.equal(s[0].note, null, "noten kan indeholde en mailadresse og skal være slettet");
-  assert.equal(s[0].url, "https://example.org/ny");
-  assert.equal((await rows("select count(*)::int n from suggestions where note like '%anna@example.org%'"))[0].n, 0);
-  const b = await rows("select user_id, note from suggestions where name = 'Bs konference'");
-  assert.deepEqual(b, [{ user_id: B, note: "Bs note" }]);
+await check("brugerens forslag slettes helt (navn, link og note); andres forslag er uændrede", async () => {
+  assert.equal((await rows("select count(*)::int n from suggestions where name in ('Ny konference', 'Anna Jensen anna@example.org')"))[0].n, 0);
+  const left = await rows("select coalesce(name, '') || ' ' || coalesce(url, '') || ' ' || coalesce(note, '') as t from suggestions");
+  for (const { t } of left) {
+    assert.doesNotMatch(t, /anna@example\.org|anna-jensen|Anna Jensen|example\.org\/ny/, "intet fra A's forslag må være tilbage");
+  }
+  assert.equal((await rows("select count(*)::int n from suggestions where user_id is null"))[0].n, 0, "ingen forslag uden afsender efterlades");
+  const b = await rows("select user_id, name, note from suggestions where name = 'Bs konference'");
+  assert.deepEqual(b, [{ user_id: B, name: "Bs konference", note: "Bs note" }]);
 });
 
 await check("indlogget uden bruger-id afvises", async () => {
@@ -238,7 +239,7 @@ await check("fejler sletningen af login, rulles gruppeændringer og forslag tilb
   }
   assert.equal(await member(g, U(1)), "admin");
   assert.equal(await member(g, B), "member");
-  assert.equal((await rows("select note from suggestions where name = 'Rollback-forslag'"))[0].note, "privat note");
+  assert.deepEqual(await rows("select user_id, note from suggestions where name = 'Rollback-forslag'"), [{ user_id: U(1), note: "privat note" }]);
   assert.equal((await rows("select count(*)::int n from auth.users where id = $1", [U(1)]))[0].n, 1);
 });
 
