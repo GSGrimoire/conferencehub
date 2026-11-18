@@ -1,7 +1,8 @@
 -- ConferenceHub: "Slet min konto" (GDPR: retten til sletning).
 -- En indlogget bruger kan kun slette sig selv. Sletningen fjerner login (auth.users),
 -- profil, gruppemedlemskaber, deltagelse og fulgte serier (on delete cascade).
--- Forslag beholdes uden afsender (on delete set null).
+-- Forslag beholdes uden afsender (on delete set null). Produktregel: konferencenavn og link
+-- bevares, men fritekstfeltet note slettes først, fordi det kan indeholde personoplysninger.
 -- Grupper: er brugeren eneste admin, bliver det længst siddende medlem admin;
 -- er brugeren eneste medlem, slettes gruppen med sin invitationskode.
 
@@ -38,11 +39,17 @@ begin
     end if;
   end loop;
 
+  -- Notes are free text and may identify the sender; keep only conference name and link.
+  update public.suggestions set note = null where user_id = me;
+
   delete from auth.users where id = me;
 end;
 $$;
 
 -- Revoke the default PUBLIC EXECUTE privilege on this function only.
 -- Avoid global changes to grants shared with other Supabase applications.
+-- Pattern for every new function in public: Supabase's default privileges grant EXECUTE to
+-- anon and authenticated, so each migration revokes from public, anon explicitly and grants
+-- only what is needed. tests/db/rls.check.mjs fails if anon can run a function not on its list.
 revoke all on function public.delete_my_account() from public, anon;
 grant execute on function public.delete_my_account() to authenticated;

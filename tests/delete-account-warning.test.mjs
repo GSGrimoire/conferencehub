@@ -21,3 +21,10 @@ test("kontosletning forklares ved knappen og på privatlivssiden", () => {
   assert.match(privacy, /Vigtig advarsel om GS QR Bar/);
   assert.match(privacy, /QR-links, kampagner eller statistik/);
 });
+
+test("forslagenes note slettes med kontoen, og teksten siger det", () => {
+  const sql = readFileSync(new URL("../supabase/migrations/20261116120000_delete_account.sql", import.meta.url), "utf8");
+  assert.match(sql, /update public\.suggestions set note = null where user_id = me;/);
+  assert.match(auth, /uden kontotilknytning og uden din note/);
+  assert.match(privacy, /mens din note slettes/);
+});

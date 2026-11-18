@@ -236,7 +236,7 @@
       toast("Gruppen er oprettet. Del invitationslinket med dine kolleger."); await load();
     };
     $("me-delete").onclick = async (ev) => {
-      if (!confirm("ADVARSEL: Slet din konto?\n\nDette sletter dit fælles Supabase-login. Hvis du bruger samme login til GS QR Bar, mister du OGSÅ din adgang til GS QR Bar.\n\nDin profil, dine gruppemedlemskaber og din deltagelse i ConferenceHub slettes. Forslag beholdes uden kontotilknytning. GS QR Bars links og statistik slettes ikke nødvendigvis.\n\nDet kan ikke fortrydes. Vil du fortsætte?")) return;
+      if (!confirm("ADVARSEL: Slet din konto?\n\nDette sletter dit fælles Supabase-login. Hvis du bruger samme login til GS QR Bar, mister du OGSÅ din adgang til GS QR Bar.\n\nDin profil, dine gruppemedlemskaber og din deltagelse i ConferenceHub slettes. Forslag beholdes uden kontotilknytning og uden din note. GS QR Bars links og statistik slettes ikke nødvendigvis.\n\nDet kan ikke fortrydes. Vil du fortsætte?")) return;
       const button = ev.currentTarget;
       button.disabled = true;
       let error;
@@ -250,10 +250,12 @@
         return toast(`Kunne ikke slette kontoen: ${error.message || "Netværksfejl"}`);
       }
       // Database deletion succeeded. A subsequent sign-out failure does not undo it.
+      let signedOut = true;
       try {
         const { error: signOutError } = await sb.auth.signOut({ scope: "local" });
         if (signOutError) throw signOutError;
       } catch (err) {
+        signedOut = false;
         console.warn("Lokal logout efter kontosletning mislykkedes", err);
       }
       me = null;
@@ -263,7 +265,8 @@
       location.hash = "";
       try { await load(); } catch (err) { console.warn("Genindlæsning efter kontosletning fejlede", err); }
       renderMe();
-      toast("Kontoen er slettet. Hvis du fortsat vises som logget ind, skal du logge ud eller genindlæse siden.");
+      toast(signedOut ? "Kontoen er slettet, og du er logget ud."
+        : "Kontoen er slettet. Log ud eller genindlæs siden, hvis du stadig vises som logget ind.");
     };
     $("me-suggest").onsubmit = async (ev) => {
       ev.preventDefault();
