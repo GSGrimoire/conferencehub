@@ -1,6 +1,6 @@
 # ConferenceHub: plan, beslutninger og status
 
-Opdateret 16. november 2026.
+Opdateret 18. november 2026.
 
 - Opgaver og ansvarlige: Asana-projektet [ConferenceHub](https://app.asana.com/1/1199525921817881/project/1220566207179174)
 - Fuld plan for version 1: [plandokument](https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7)
@@ -80,6 +80,6 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 | Fase 2: redaktørens kontrol og godkendelsesliste | Bygget og testet lokalt 16. nov. |
 | Fase 2: redaktøren som planlagt opgave, seriesider, browserhentning | Mangler |
 | Fase 3 beta: login, grupper, deltagelse, Vis aktivitet, forslag | Bygget; Google-login er ikke slået til i Supabase (16. nov.: "provider is not enabled") |
-| Privatlivsside og "slet min konto" | I gang på `test` |
+| Privatlivsside og "slet min konto" | 18. nov.: forslagsnoter slettes med kontoen, 17 databasetests bestået lokalt (`claude/issue-1-delete-account`). Venter på uafhængig review (issue #1) og Gus' Supabase-kontrol, dataansvarlig og region. Ikke på `main` |
 | Mail-login, personligt kalenderfeed, admin-side | Mangler |
 | Supabase-synkronisering | Venter på GitHub Actions-minutter (1. dec.); siden læser data direkte fra repo'et og påvirkes ikke |
