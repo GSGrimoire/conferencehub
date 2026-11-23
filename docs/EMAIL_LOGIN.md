@@ -1,5 +1,7 @@
 # E-mail-login med engangskode
 
+> **Uafhængig Claude-review ønskes:** [Samlet plan og sikkerhedsreview, 23. november 2026](CLAUDE_REVIEW_EMAIL_SIGNIN_2026-11-23.md). Dette er et reviewoplæg, ikke tilladelse til produktionsændringer.
+
 Status 23. november 2026: klar som kode på `chatgpt/regionh-email-code-login`, **ikke aktiv i produktion**. Kræver uafhængig Full review af ændringer i login og en dokumenteret ende-til-ende-test.
 
 ## Formål
