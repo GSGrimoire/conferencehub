@@ -77,17 +77,48 @@
 
   // ---------------------------------------------------------------- login
   const dlg = $("login-dialog");
-  const emailLogin = cfg.emailLogin ? window.CHEmailLogin.setup(sb.auth) : null;
+  const captcha = cfg.emailLogin && cfg.emailTurnstileSiteKey
+    ? window.CHEmailLogin.createCaptcha($("login-email-captcha"), cfg.emailTurnstileSiteKey)
+    : null;
+  const emailLogin = captcha ? window.CHEmailLogin.setup(sb.auth, { captcha }) : null;
   document.addEventListener("click", (ev) => {
     if (ev.target.closest("[data-login]")) {
       emailLogin?.reset({ focus: false });
       $("login-msg").textContent = "";
       dlg.showModal();
+      captcha?.open();
     }
   });
-  $("login-google").onclick = async () => {
-    const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname + location.search } });
-    if (error) $("login-msg").textContent = `Google-login virker ikke endnu: ${error.message}`;
+  dlg.addEventListener("close", () => {
+    if (dlg.open) return;
+    emailLogin?.reset({ focus: false });
+    captcha?.close();
+  });
+  const googleButton = $("login-google");
+  googleButton.onclick = async () => {
+    googleButton.disabled = true;
+    try {
+      const response = await fetch(new URL("/auth/v1/settings", cfg.supabaseUrl), {
+        headers: { apikey: cfg.publishableKey },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!response.ok) throw new Error("Provider settings unavailable");
+      const settings = await response.json();
+      if (!dlg.open) return;
+      if (settings.external?.google === false) {
+        $("login-msg").textContent = "Google-login er endnu ikke slået til. Du kan se konferencer og frister uden at logge ind.";
+        return;
+      }
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: location.origin + location.pathname + location.search },
+      });
+      if (error) throw error;
+    } catch {
+      if (dlg.open) $("login-msg").textContent = "Kunne ikke starte Google-login. Prøv igen om lidt.";
+    } finally {
+      googleButton.disabled = false;
+    }
   };
   // Passwordless email-code login is disabled until a verified mail sender and
   // the Supabase email code template are configured and independently reviewed.

@@ -5,7 +5,7 @@ import { runInNewContext } from "node:vm";
 
 const src = readFileSync(new URL("../site/email-login.js", import.meta.url), "utf8");
 const ids = ["login-email", "login-email-verify", "login-email-input", "login-email-code", "login-email-send", "login-email-confirm", "login-email-resend", "login-email-reset", "login-email-target", "login-msg"];
-function createHarness(auth = {}) {
+function createHarness(auth = {}, captcha = { getResponse: () => "verified-challenge", reset() {} }) {
   const elements = Object.fromEntries(ids.map(id => [id, {value: "", textContent: "", hidden: false, disabled: false, focus() {this.focused = true;}}]));
   const doc = { getElementById: id => elements[id] };
   const w = {};
@@ -13,7 +13,7 @@ function createHarness(auth = {}) {
   let ms = 0;
   const clock = { now: () => ms, setInterval: (fn, interval) => {assert.equal(interval,1000); timers.add(fn); return fn;}, clearInterval: id => timers.delete(id)};
   runInNewContext(src, {window: w, document: doc});
-  const controller = w.CHEmailLogin.setup(auth, doc, clock);
+  const controller = w.CHEmailLogin.setup(auth, { captcha, doc, clock });
   const event = {preventDefault() {}};
   const advance = (delay) => {ms += delay; for(const timer of [...timers]) timer();};
   return {elements,controller,event,advance,timers};
@@ -32,6 +32,7 @@ test("new-user code request is sent and verification is shown", async () => {
   await elements["login-email"].onsubmit(event);
   assert.equal(sent.email,"colleague@regionh.dk");
   assert.equal(sent.options.shouldCreateUser,true);
+  assert.equal(sent.options.captchaToken, "verified-challenge");
   assert.equal(elements["login-email-verify"].hidden,false);
   assert.equal(elements["login-email-target"].textContent,"colleague@regionh.dk");
   assert.match(elements["login-msg"].textContent,/10 minutter/);
@@ -44,7 +45,7 @@ test("valid six-digit code verifies intended address", async () => {
   const {elements,event}=createHarness({signInWithOtp:async()=>({error:null}),verifyOtp:async x=>{verified=x;return {error:null};}});
   elements["login-email-input"].value="colleague@regionh.dk";
   await elements["login-email"].onsubmit(event);
-  elements["login-email-code"].value="123456";
+  elements["login-email-code"].value="123 456";
   await elements["login-email-verify"].onsubmit(event);
   assert.equal(verified.email,"colleague@regionh.dk");
   assert.equal(verified.token,"123456");
@@ -96,10 +97,14 @@ test("reset clears verification while preserving local send cooldown", async () 
   const {elements,event,controller}=createHarness({signInWithOtp:async()=>{count++;return {error:null};}});
   elements["login-email-input"].value="colleague@regionh.dk";
   await elements["login-email"].onsubmit(event);
+  elements["login-email-code"].value = "123456";
   controller.reset({focus:false});
   assert.equal(elements["login-email"].hidden,false);
   assert.equal(elements["login-email-verify"].hidden,true);
   assert.equal(elements["login-email-code"].value,"");
+  assert.equal(elements["login-email-input"].value, "");
+  assert.equal(elements["login-email-target"].textContent, "");
+  elements["login-email-input"].value = "colleague@regionh.dk";
   await elements["login-email"].onsubmit(event);
   assert.equal(count,1);
   assert.match(elements["login-msg"].textContent,/Vent 60 sekunder/);
@@ -137,6 +142,41 @@ test("in-flight send prevents duplicate requests", async () => {
   assert.equal(elements["login-email-send"].disabled,false);
 });
 
+test("a send started before closing the dialog cannot restore the address", async () => {
+  let finish;
+  const { elements, event, controller } = createHarness({
+    signInWithOtp: () => new Promise(resolve => { finish = resolve; }),
+  });
+  elements["login-email-input"].value = "previous@regionh.dk";
+  const request = elements["login-email"].onsubmit(event);
+  controller.reset({ focus: false });
+  finish({ error: null });
+  await request;
+  assert.equal(elements["login-email-verify"].hidden, true);
+  assert.equal(elements["login-email-input"].value, "");
+  assert.equal(elements["login-email-target"].textContent, "");
+});
+
+test("email requests require a fresh challenge", async () => {
+  let token = "";
+  let sent = 0;
+  const { elements, event, advance } = createHarness({
+    signInWithOtp: async () => { sent++; return { error: null }; },
+  }, { getResponse: () => token, reset: () => { token = ""; } });
+  elements["login-email-input"].value = "person@regionh.dk";
+  await elements["login-email"].onsubmit(event);
+  assert.equal(sent, 0);
+  assert.match(elements["login-msg"].textContent, /sikkerhedskontrollen/);
+  token = "first-challenge";
+  await elements["login-email"].onsubmit(event);
+  advance(60_000);
+  await elements["login-email-resend"].onclick();
+  assert.equal(sent, 1);
+  token = "second-challenge";
+  await elements["login-email-resend"].onclick();
+  assert.equal(sent, 2);
+});
+
 test("site integration retains Google and feature disabled", () => {
   const config=readFileSync(new URL("../site/config.js",import.meta.url),"utf8");
   const html=readFileSync(new URL("../site/index.html",import.meta.url),"utf8");
@@ -146,7 +186,8 @@ test("site integration retains Google and feature disabled", () => {
   assert.ok(html.includes('id="login-email-resend"'));
   assert.ok(html.indexOf('src="email-login.js"') < html.indexOf('src="auth.js"'));
   assert.ok(auth.includes("emailLogin?.reset({ focus: false })"));
-  assert.ok(auth.includes("window.CHEmailLogin.setup(sb.auth)"));
+  assert.ok(auth.includes("window.CHEmailLogin.setup(sb.auth, { captcha })"));
+  assert.ok(auth.includes("cfg.emailLogin && cfg.emailTurnstileSiteKey"));
 });
 
 test("both new-user and returning-user email templates send a code valid for ten minutes", () => {

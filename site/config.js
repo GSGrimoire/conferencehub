@@ -3,5 +3,6 @@
 window.CH_CONFIG = {
   supabaseUrl: "https://vczueyxesistyzwyotyv.supabase.co",
   publishableKey: "sb_publishable_2PkU-i95QoiT3tOIIqbqow_TS2x5p3Z",
-  emailLogin: false,       // slås til, når der er en egen mailafsender (SMTP)
+  emailLogin: false,
+  emailTurnstileSiteKey: "", // Offentlig Turnstile-nøgle. Den hemmelige nøgle konfigureres i Supabase.
 };

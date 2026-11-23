@@ -20,7 +20,7 @@
       : "Kunne ikke sende en kode. Kontrollér adressen og prøv senere.";
   }
 
-  function setup(auth, doc = document, clock = {}) {
+  function setup(auth, { captcha, doc = document, clock = {} }) {
     const get = (id) => doc.getElementById(id);
     const form = get("login-email");
     const verifyForm = get("login-email-verify");
@@ -45,6 +45,7 @@
     let timer = null;
     let sending = false;
     let verifying = false;
+    let generation = 0;
 
     function updateResend() {
       const remaining = Math.max(0, Math.ceil((resendAvailableAt - now()) / 1000));
@@ -71,16 +72,23 @@
         updateResend();
         return;
       }
+      const captchaToken = captcha.getResponse();
+      if (!captchaToken) {
+        message.textContent = "Gennemfør sikkerhedskontrollen, og prøv igen.";
+        return;
+      }
+      const requestGeneration = generation;
       sending = true;
       sendButton.disabled = true;
       resendButton.disabled = true;
       message.textContent = "Sender engangskode…";
       try {
-        const { error } = await auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+        const { error } = await auth.signInWithOtp({ email, options: { shouldCreateUser: true, captchaToken } });
         if (error) throw error;
-        pendingEmail = email;
         lastSentEmail = email;
         resendAvailableAt = now() + RESEND_WAIT_MS;
+        if (requestGeneration !== generation) return;
+        pendingEmail = email;
         target.textContent = email;
         form.hidden = true;
         verifyForm.hidden = false;
@@ -89,21 +97,25 @@
         message.textContent = "Koden er sendt. Den er gyldig i 10 minutter.";
         countdown();
       } catch (error) {
-        message.textContent = emailError(error, "send");
+        if (requestGeneration === generation) message.textContent = emailError(error, "send");
       } finally {
         sending = false;
         sendButton.disabled = false;
+        if (requestGeneration === generation) captcha.reset();
         updateResend();
       }
     }
 
     function reset({ focus = true } = {}) {
+      generation++;
       pendingEmail = "";
+      emailInput.value = "";
+      target.textContent = "";
       codeInput.value = "";
       form.hidden = false;
       verifyForm.hidden = true;
       message.textContent = "";
-      verifyButton.disabled = false;
+      verifyButton.disabled = verifying;
       if (timer !== null) { stopInterval(timer); timer = null; }
       // Keep the last-send timestamp so reopening the dialog cannot bypass cooldown.
       updateResend();
@@ -121,12 +133,13 @@
 
     verifyForm.onsubmit = async (event) => {
       event.preventDefault();
-      const token = codeInput.value.trim();
+      const token = codeInput.value.replace(/\s/g, "");
       if (verifying || sending) return;
       if (!pendingEmail || !/^\d{6}$/.test(token)) {
         message.textContent = "Skriv den sekscifrede kode fra din mail.";
         return;
       }
+      const requestGeneration = generation;
       verifying = true;
       verifyButton.disabled = true;
       updateResend();
@@ -134,9 +147,9 @@
       try {
         const { error } = await auth.verifyOtp({ email: pendingEmail, token, type: "email" });
         if (error) throw error;
-        message.textContent = "Du er logget ind.";
+        if (requestGeneration === generation) message.textContent = "Du er logget ind.";
       } catch (error) {
-        message.textContent = emailError(error, "verify");
+        if (requestGeneration === generation) message.textContent = emailError(error, "verify");
       } finally {
         verifying = false;
         verifyButton.disabled = false;
@@ -151,5 +164,64 @@
     return { reset };
   }
 
-  window.CHEmailLogin = { setup };
+  function createCaptcha(container, siteKey) {
+    let loading;
+    let widget = null;
+    let wanted = false;
+
+    function loadTurnstile() {
+      if (window.turnstile) return Promise.resolve(window.turnstile);
+      loading ??= new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        script.onload = () => window.turnstile ? resolve(window.turnstile) : reject(new Error("Turnstile unavailable"));
+        script.onerror = () => {
+          script.remove();
+          reject(new Error("Turnstile unavailable"));
+        };
+        document.head.append(script);
+      }).catch((error) => {
+        loading = undefined;
+        throw error;
+      });
+      return loading;
+    }
+
+    return {
+      async open() {
+        wanted = true;
+        container.hidden = false;
+        try {
+          const api = await loadTurnstile();
+          if (!wanted || widget !== null) return;
+          container.textContent = "";
+          widget = api.render(container, {
+            sitekey: siteKey,
+            action: "email_code",
+            language: "da",
+            size: "compact",
+            appearance: "interaction-only",
+            "response-field": false,
+          });
+        } catch {
+          if (wanted) container.textContent = "Sikkerhedskontrollen kunne ikke indlæses. Luk dialogen, og prøv igen.";
+        }
+      },
+      close() {
+        wanted = false;
+        if (widget !== null) window.turnstile.remove(widget);
+        widget = null;
+        container.textContent = "";
+        container.hidden = true;
+      },
+      getResponse() {
+        return widget === null ? "" : window.turnstile.getResponse(widget);
+      },
+      reset() {
+        if (widget !== null) window.turnstile.reset(widget);
+      },
+    };
+  }
+
+  window.CHEmailLogin = { setup, createCaptcha };
 })();
