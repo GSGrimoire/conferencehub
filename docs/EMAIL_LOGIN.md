@@ -27,6 +27,8 @@ Brugeren angiver sin mailadresse, modtager en kode og indtaster den på samme si
 3. Indsæt kodeskabelonen fra `supabase/templates/magic_link_code.html`, og kontrollér e-mail-udbyder, kodeudløb og ratebegrænsninger.
 4. Test først til en konto ejet af projektet, dernæst med udtrykkelig accept fra en kollega på `@regionh.dk`. Kontroller indbakke, spamfilter, engangskode og reelt login, før noget udgives.
 
+**Supabase Free-plan (opdatering juni 2026):** Nye gratis projekter kan ikke redigere auth-mailskabeloner med Supabases indbyggede afsender. Egen SMTP (her Gmail) gør det muligt at tilpasse skabelonen, så `{{ .Token }}` kan bruges i stedet for et login-link. Konfigurér og test SMTP **før** du forsøger at aktivere kodeskabelonen. Kilde: https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier.
+
 **Begrænsninger:** Google kan begrænse automatiseret afsendelse, tilbagekalde appadgangskoder eller kræve fornyet godkendelse. Institutionens mailfilter kan afvise eller forsinke breve fra en almindelig Gmail-afsender. Brug kun dette til en afgrænset prøve, ikke som antaget stabil produktionsinfrastruktur. Mailen bør ikke indeholde patientoplysninger eller interne hospitalsdata. Sikr relevant databeskyttelsesvurdering, inden kollegaers arbejdsmailadresser behandles.
 
 Officielle vejledninger:
