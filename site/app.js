@@ -56,12 +56,20 @@ function inDays(n) {
   return `om ${n} dage`;
 }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function webLink(value) {
+  try {
+    const url = new URL(value);
+    if ((url.protocol === "https:" || url.protocol === "http:") && !url.username && !url.password) return url.href;
+  } catch { /* En ugyldig kilde vises uden link. */ }
+  return "";
+}
 
 // ---------- tilstand ----------
 const state = { editions: [], series: {}, evidence: {}, topic: "all", q: "", today: todayDay() };
 window.CH = { state, dayOf, fmtRange, esc };
 
 function nextDeadline(e) {
+  if (e.status === "cancelled" || dayOf(e.end || e.start) < state.today) return null;
   let best = null;
   for (const [field, , short] of DEADLINES) {
     if (!e[field]) continue;
@@ -70,12 +78,15 @@ function nextDeadline(e) {
   }
   return best;
 }
+const searchText = (s) => s.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/ø/g, "o").replace(/æ/g, "ae");
 function matches(e) {
-  if (state.topic !== "all" && !(TOPIC_MAP[e.topic] || []).includes(state.topic)) return false;
+  const topics = TOPIC_MAP[e.topic] || [];
+  if (state.topic !== "all" && !topics.includes(state.topic)) return false;
   if (!state.q) return true;
   const s = state.series[e.series] || {};
-  const hay = [e.name, e.venue, e.topic, s.name, s.short_name].join(" ").toLowerCase();
-  return state.q.toLowerCase().split(/\s+/).every((w) => hay.includes(w));
+  const topicNames = TOPICS.filter((topic) => topics.includes(topic.key)).map((topic) => topic.label);
+  const hay = searchText([e.name, e.venue, e.topic, s.name, s.short_name, s.organiser, ...topicNames].join(" "));
+  return searchText(state.q).split(/\s+/).every((word) => hay.includes(word));
 }
 
 // ---------- tidslinje ----------
@@ -93,7 +104,7 @@ function renderStrip() {
   }
 
   const items = state.editions
-    .filter((e) => matches(e) && dayOf(e.end || e.start) >= ws && dayOf(e.start) < we)
+    .filter((e) => e.status !== "cancelled" && matches(e) && dayOf(e.end || e.start) >= ws && dayOf(e.start) < we)
     .sort((a, b) => a.start.localeCompare(b.start));
   // Fordel flag på baner, så etiketterne ikke overlapper (ca. 2,45 px pr. dag ved min. bredde).
   const lanes = [];
@@ -121,38 +132,49 @@ function row(e) {
   const s = state.series[e.series] || {};
   const nd = nextDeadline(e);
   const isPast = dayOf(e.end || e.start) < state.today;
+  const cancelled = e.status === "cancelled";
   let next;
-  if (isPast) next = `<span class="none">Afholdt</span>`;
+  if (cancelled) next = `<span class="soon">Aflyst</span>`;
+  else if (isPast) next = `<span class="none">Afholdt</span>`;
   else if (nd) next = `<span class="${nd.days <= SOON_DAYS ? "soon" : ""}">${nd.short} ${nd.days <= SOON_DAYS ? inDays(nd.days) : fmtDate(nd.iso)}</span>`;
+  else if (DEADLINES.some(([field]) => e[field])) next = `<span class="none">Ingen kommende frister</span>`;
   else next = `<span class="none">Ingen kendt frist</span>`;
 
   // Kilde pr. felt: ordret citat fra konferencens egen side (data/evidence.json).
   const src = (field) => {
     const ev = state.evidence[`${e.id}|${field}`];
-    return ev ? ` <a class="src" href="${esc(ev.source_url)}" rel="noopener" title="&#8220;${esc(ev.quote)}&#8221;">kilde</a>` : "";
+    if (!ev) return "";
+    const url = webLink(ev.source_url);
+    return ` <details class="evidence"><summary>Se kilde</summary>
+      <blockquote>${esc(ev.quote)}</blockquote>${url ? `<a href="${esc(url)}" rel="noopener">Åbn kilden</a>` : ""}
+    </details>`;
   };
   const dl = [["Dato", esc(fmtRange(e.start, e.end)) + src("start")], ["Sted", esc(e.venue || "Ikke offentliggjort") + src("venue")]];
+  if (e.status === "announced") dl.unshift(["Status", "Annonceret"]);
   for (const [field, label] of DEADLINES) {
     const note = (e.deadline_notes || {})[field.replace("_deadline", "")];
     if (e[field]) {
       const passed = dayOf(e[field]) < state.today;
-      dl.push([label, `<span class="${passed ? "expired" : ""}">${fmtDate(e[field])}</span>${passed ? " (udløbet)" : ""}${src(field)}`]);
-    } else if (note) dl.push([label, esc(note)]);
+      dl.push([label, `<span class="${passed || cancelled ? "expired" : ""}">${fmtDate(e[field])}</span>${cancelled ? " (aflyst)" : passed ? " (udløbet)" : ""}${src(field)}`]);
+    } else if (!cancelled || note) dl.push([label, esc(note || "Ikke oplyst")]);
   }
   if (e.note) dl.push(["Note", esc(e.note)]);
-  const links = (e.links || []).map((l) => `<a href="${esc(l.url)}" rel="noopener">${esc(l.label)}</a>`).join("");
+  const links = (e.links || []).map((link) => {
+    const url = webLink(link.url);
+    return url ? `<a href="${esc(url)}" rel="noopener">${esc(link.label)}</a>` : "";
+  }).join("");
 
   return `<li class="row" id="e-${esc(e.id)}"><details>
     <summary>
       <div class="when">${esc(fmtRange(e.start, e.end))}</div>
       <div class="what"><h3>${esc(e.name)}<span class="chev" aria-hidden="true">›</span></h3><p>${esc(e.venue || "Sted ikke offentliggjort")}</p></div>
-      <div class="next">${next}<span class="crowd" data-ed="${esc(e.id)}"></span></div>
+      <div class="next">${next}${cancelled ? "" : `<span class="crowd" data-ed="${esc(e.id)}"></span>`}</div>
     </summary>
     <div class="detail">
       <dl>${dl.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
-      <div class="mine" data-ed="${esc(e.id)}" data-past="${isPast ? 1 : 0}"></div>
+      <div class="mine" data-ed="${esc(e.id)}" data-past="${isPast ? 1 : 0}" data-cancelled="${cancelled ? 1 : 0}"></div>
       <div class="actions">
-        ${isPast ? "" : `<button class="btn" type="button" data-ics="${esc(e.id)}">Føj til kalender</button>`}
+        ${isPast || cancelled ? "" : `<button class="btn" type="button" data-ics="${esc(e.id)}">Føj til kalender</button>`}
         ${links}
       </div>
       <p class="source">Serie: ${esc(s.name || e.series)}. ${e.last_verified_at ? `Sidst bekræftet på konferencens egen side ${fmtDate(e.last_verified_at)}.` : `Kilde: ${esc(e.source || "ukendt")}.`}</p>
@@ -160,13 +182,13 @@ function row(e) {
   </details></li>`;
 }
 
-function render() {
+function render(linkedEdition = "") {
   const nearEnd = (() => { const t = new Date(state.today * 864e5); return Date.UTC(t.getUTCFullYear(), t.getUTCMonth() + NEAR_MONTHS, t.getUTCDate()) / 864e5; })();
   const list = state.editions.filter(matches);
   const soon = [], far = [], past = [];
   for (const e of list) {
     const end = dayOf(e.end || e.start), start = dayOf(e.start);
-    if (end < state.today) { if (state.today - end <= PAST_DAYS) past.push(e); }
+    if (end < state.today) { if (state.today - end <= PAST_DAYS || e.id === linkedEdition) past.push(e); }
     else if (start <= nearEnd) soon.push(e);
     else far.push(e);
   }
@@ -202,7 +224,7 @@ function icsText(e) {
   const fold = (s) => s.replace(/\\/g, "\\\\").replace(/[,;]/g, (c) => "\\" + c).replace(/\n/g, "\\n");
   const d = (iso) => iso.replace(/-/g, "");
   const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-  const url = (e.links && e.links[0] && e.links[0].url) || "";
+  const url = (e.links || []).map((link) => webLink(link.url)).find(Boolean);
   const ev = (uid, summary, start, endExcl) => [
     "BEGIN:VEVENT", `UID:${uid}@conferencehub`, `DTSTAMP:${stamp}`,
     `DTSTART;VALUE=DATE:${d(start)}`, `DTEND;VALUE=DATE:${d(endExcl)}`,
@@ -221,6 +243,7 @@ document.addEventListener("click", (ev) => {
   const b = ev.target.closest("[data-ics]");
   if (!b) return;
   const e = state.editions.find((x) => x.id === b.dataset.ics);
+  if (!e || e.status === "cancelled") return;
   const blob = new Blob([icsText(e)], { type: "text/calendar;charset=utf-8" });
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `${e.id}.ics` });
   document.body.appendChild(a); a.click(); a.remove();
@@ -243,8 +266,23 @@ document.getElementById("q").addEventListener("input", (ev) => { state.q = ev.ta
 
 // Et link til en konference (#e-id) åbner rækken.
 function openFromHash() {
-  const id = decodeURIComponent(location.hash.slice(1));
-  const li = id && document.getElementById(id);
+  if (!location.hash.startsWith("#e-")) return;
+  let id;
+  try { id = decodeURIComponent(location.hash.slice(1)); }
+  catch { return; }
+  const edition = state.editions.find((e) => `e-${e.id}` === id);
+  if (!edition) return;
+  let li = document.getElementById(id);
+  if (!li) {
+    if (!matches(edition)) {
+      state.topic = "all";
+      state.q = "";
+      document.getElementById("q").value = "";
+      renderChips();
+    }
+    render(edition.id);
+    li = document.getElementById(id);
+  }
   if (!li) return;
   const past = li.closest(".past"); if (past) past.open = true;
   const det = li.querySelector("details"); if (det) det.open = true;
