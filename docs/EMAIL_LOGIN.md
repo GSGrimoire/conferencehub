@@ -43,7 +43,7 @@ Kilder:
 
 ## Vigtig tværgående risiko
 
-Den konkrete Supabase Auth-konfiguration (afsender, SMTP-tjeneste og Magic Link-email-skabelon) gælder for **hele Supabase-projektet**, ikke kun ConferenceHubs frontend. Det er tidligere besluttet midlertidigt at bevare potentielt fælles Supabase-login med GS QR Bar, men delingen af selve Auth-projektet er ikke teknisk afklaret på tværs af apps. Før en ny skabelon installeres, skal vi kontrollere om GS QR Bar bruger samme projekt og om dens eventuelle e-mail-login afhænger af de eksisterende Magic Links. En global skabelonændring kan ellers bryde login i den anden app. Ingen globale Auth-ændringer før denne kompatibilitetskontrol og uafhængig Full review.
+Supabase Auth-konfiguration (afsender, SMTP-tjeneste og Magic Link-email-skabelon) gælder for **hele Supabase-projektet**, ikke kun ConferenceHubs frontend. Efterfølgende gennemgang 23. november af den kildegendannede GS QR Bar Site-version 6 (`GSGrimoire/gs-qr-bar`, branch `recovery/existing-site-source-20261109`, `docs/SOURCE_RECOVERY.md` og `docs/ARCHITECTURE.md`) viser **ChatGPT-hostet login og Cloudflare D1**, ikke Supabase Auth. Det taler imod at den dokumenterede QR Bar-version deler ConferenceHubs `auth.users`, men runtime-konfigurationen og eventuelle senere ændringer er ikke uafhængigt bekræftet. Afklar eventuelle øvrige apps på samme Supabase-projekt, før den globale e-mailskabelon ændres, og gennemfør uafhængig Full review. Ingen globale Auth-ændringer er udført.
 
 ## Tekniske noter
 
