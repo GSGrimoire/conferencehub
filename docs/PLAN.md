@@ -28,6 +28,7 @@ En kurateret oversigt over konferencer i plastik- og rekonstruktiv kirurgi, hvor
 | 16. nov. 2026 | Asana-opgaver til Gus lægges både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min". Gus ser kun Day To Day |
 | 16. nov. 2026 | Behold Supabase til SurgicalConferenceHub og GS QR Bar foreløbigt, uden tidlig opdeling. Ved delt `auth.users` fjerner kontosletning også GS QR Bar-login. Kræv tydelig advarsel, teknisk verifikation og uafhængig sikkerhedsreview før lancering. [Beslutningsnotat](decisions/0001-shared-supabase.md) |
 | 23. nov. 2026 | Pilotønske: bevar Google-login og tilbyd engangskode via e-mail (også @regionh.dk). Kode og test forberedt på særskilt udviklingsbranch; produktionsfunktion forbliver slået fra, indtil verificeret mailafsender, skabelon, integrationstest og Full review er gennemført. [Opsætning](EMAIL_LOGIN.md). |
+| 23. nov. 2026 | Claude gennemførte uafhængig Full review af e-mail-login (SHA 4cb9063): **REVISE PLAN**. Krav: nybruger-skabelon, kodeudløb 600 s, reel server-side rollback, genafsendelse og dialogreset. Disse rettelser er forberedt på samme featurebranch; **anden review og live-test mangler**. [Review](reviews/2026-11-23-pr6-claude.md). |
 
 ## Arkitektur
 
@@ -82,5 +83,5 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 | Fase 2: redaktøren som planlagt opgave, seriesider, browserhentning | Mangler |
 | Fase 3 beta: login, grupper, deltagelse, Vis aktivitet, forslag | Bygget; Google-login er ikke slået til i Supabase (16. nov.: "provider is not enabled") |
 | Privatlivsside og "slet min konto" | I gang på `test` |
-| Mail-login, personligt kalenderfeed, admin-side | E-mail-kode-login er forberedt og enhedstestet på særskilt branch (deaktiveret). Mailafsender, Supabase-skabelon og Full review mangler; kalenderfeed og admin-side mangler. |
+| Mail-login, personligt kalenderfeed, admin-side | E-mail-kode-login rettet efter første Claude Full review, der konkluderede **REVISE PLAN**. Nybruger-/Magic Link-skabeloner, 60-sekunders genafsendelse og 600-sekunders udløb er dokumenteret, men opsætning er **ikke aktiv**. Ny uafhængig godkendelse, mailafsender, live-dokumentation og browser-test mangler. Kalenderfeed og admin-side mangler. |
 | Supabase-synkronisering | Venter på GitHub Actions-minutter (1. dec.); siden læser data direkte fra repo'et og påvirkes ikke |
