@@ -42,6 +42,10 @@ cd dist && python3 -m http.server 8000
 
 Cloudflare: build-kommando `node scripts/build.mjs`, output-mappe `dist`. Siden bygges fra `main`.
 
+## Kontrollér Supabase-forbindelsen
+
+Fra repoets rod kan redaktøren køre `node scripts/check-supabase.mjs`. Det laver præcis én læseforespørgsel mod højst én offentlig konferencerække i Supabase ved hjælp af den offentlige nøgle, der allerede ligger i `site/config.js`. Det kræver netadgang; returstatus og fejl vises, men der skrives ikke i databasen. En vellykket læsning er **ikke** garanti for, at et gratis Supabase-projekt undgår automatisk pause. Se `docs/EDITOR.md` for, hvordan kontrollen passer ind i redaktørens procedure.
+
 ## Branches
 
 - `test`: alt nyt lander her først og kontrolleres lokalt (tests, build, browser).
