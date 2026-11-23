@@ -77,8 +77,13 @@
 
   // ---------------------------------------------------------------- login
   const dlg = $("login-dialog");
+  const emailLogin = cfg.emailLogin ? window.CHEmailLogin.setup(sb.auth) : null;
   document.addEventListener("click", (ev) => {
-    if (ev.target.closest("[data-login]")) { $("login-msg").textContent = ""; dlg.showModal(); }
+    if (ev.target.closest("[data-login]")) {
+      emailLogin?.reset({ focus: false });
+      $("login-msg").textContent = "";
+      dlg.showModal();
+    }
   });
   $("login-google").onclick = async () => {
     const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname + location.search } });
@@ -86,7 +91,7 @@
   };
   // Passwordless email-code login is disabled until a verified mail sender and
   // the Supabase email code template are configured and independently reviewed.
-  if (cfg.emailLogin) window.CHEmailLogin.setup(sb.auth);
+
 
   // ---------------------------------------------------------------- deltagelse på hver konference
   function decorate() {
@@ -285,6 +290,7 @@
   let loaded = false;
   sb.auth.onAuthStateChange((event) => {
     if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+      emailLogin?.reset({ focus: false });
       if (dlg.open) dlg.close();
       if (loaded || event === "SIGNED_OUT") setTimeout(load, 0);
     }
