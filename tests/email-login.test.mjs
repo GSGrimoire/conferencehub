@@ -82,11 +82,11 @@ test("the sign-in option stays disabled in production and Google remains intact"
   const config = readFileSync(new URL("../site/config.js", import.meta.url), "utf8");
   const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   const auth = readFileSync(new URL("../site/auth.js", import.meta.url), "utf8");
-  assert.match(config, /emailLogin:\\s*false/);
+  assert.ok(config.includes('emailLogin: false'));
   assert.match(html, /id="login-google"/);
   assert.match(html, /id="login-email-code"/);
   assert.ok(html.indexOf('src="email-login.js"') < html.indexOf('src="auth.js"'));
-  assert.match(auth, /CHEmailLogin\\.setup\\(sb\\.auth\\)/);
+  assert.ok(auth.includes('CHEmailLogin.setup(sb.auth)'));
 });
 test("a sending failure leaves the email entry screen available", async () => {
   const { elements, event } = createHarness({
