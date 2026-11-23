@@ -47,7 +47,7 @@
     verifyForm.onsubmit = async (event) => {
       event.preventDefault();
       const token = codeInput.value.trim();
-      if (!pendingEmail || !/^\\d{6}$/.test(token)) {
+      if (!pendingEmail || !/^\d{6}$/.test(token)) {
         message.textContent = "Skriv den sekscifrede kode fra din mail.";
         return;
       }
