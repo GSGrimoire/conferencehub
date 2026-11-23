@@ -42,6 +42,10 @@ cd dist && python3 -m http.server 8000
 
 Cloudflare: build-kommando `node scripts/build.mjs`, output-mappe `dist`. Siden bygges fra `main`.
 
+## E-mail-login for kolleger
+
+Et login med sekscifret engangskode er forberedt på en udviklingsbranch, men er **ikke aktivt** på produktionssiden. Det kan bruges med `@regionh.dk` og andre mailadresser, når en verificeret mailafsender og Supabases e-mail-skabelon er sat op. Google-login bevares. Læs [opsætning og begrænsninger](docs/EMAIL_LOGIN.md). Loginændringer kræver uafhængig sikkerhedsreview.
+
 ## Branches
 
 - `test`: alt nyt lander her først og kontrolleres lokalt (tests, build, browser).
