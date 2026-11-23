@@ -79,6 +79,14 @@ await check("kalendertoken bevares og er kun synlig for sin ejer", async () => {
   assert.equal((await one(B, "select * from profiles where id = $1", [A])).calendar_token, undefined);
 });
 
+await check("kalender- og gruppeændringen kan køres igen uden at udskifte tokens", async () => {
+  const before = await one(B, "select token from calendar_tokens");
+  const migration = readdirSync(dir).find(f => f.endsWith("_protect_calendar_tokens_and_group_visibility.sql"));
+  await db.exec(readFileSync(new URL(migration, dir), "utf8"));
+  assert.deepEqual(await one(B, "select token from calendar_tokens"), before);
+  assert.equal((await one(A, "select token from calendar_tokens")).token, previousToken);
+});
+
 await check("gruppemedlemmer kan kun se medlemsrækker i egne grupper", async () => {
   assert.deepEqual((await as(B, "select user_id from group_members where group_id = $1 order by user_id", [g1])).rows, [{ user_id: A }, { user_id: B }]);
   assert.deepEqual((await as(B, "select user_id from group_members where group_id = $1", [g3])).rows, []);

@@ -1,11 +1,15 @@
 begin;
+set local lock_timeout = '5s';
 
-create schema conferencehub_private;
+-- Prevent a signup from landing after the copy and before the new trigger is installed.
+lock table public.profiles in access exclusive mode;
+
+create schema if not exists conferencehub_private;
 revoke all on schema conferencehub_private from public, anon, authenticated;
 grant usage on schema conferencehub_private to authenticated;
 
 -- Profile visibility does not confer access to calendar credentials.
-create table public.calendar_tokens (
+create table if not exists public.calendar_tokens (
   user_id uuid primary key references public.profiles(id) on delete cascade,
   token uuid not null default gen_random_uuid()
 );
@@ -13,14 +17,25 @@ alter table public.calendar_tokens enable row level security;
 revoke all on public.calendar_tokens from public, anon, authenticated;
 grant select on public.calendar_tokens to authenticated;
 grant select, insert, update, delete on public.calendar_tokens to service_role;
+drop policy if exists "calendar token owner reads" on public.calendar_tokens;
 create policy "calendar token owner reads" on public.calendar_tokens
   for select to authenticated using (user_id = (select auth.uid()));
 
-insert into public.calendar_tokens (user_id, token)
-select id, calendar_token from public.profiles;
-alter table public.profiles drop column calendar_token;
+do $transfer$
+begin
+  if exists (
+    select 1 from pg_catalog.pg_attribute
+    where attrelid = 'public.profiles'::regclass and attname = 'calendar_token' and not attisdropped
+  ) then
+    insert into public.calendar_tokens (user_id, token)
+    select id, calendar_token from public.profiles
+    on conflict (user_id) do nothing;
+    alter table public.profiles drop column calendar_token;
+  end if;
+end;
+$transfer$;
 
-create function conferencehub_private.create_calendar_token() returns trigger
+create or replace function conferencehub_private.create_calendar_token() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
   insert into public.calendar_tokens (user_id) values (new.id);
@@ -28,13 +43,13 @@ begin
 end;
 $$;
 revoke execute on function conferencehub_private.create_calendar_token() from public, anon, authenticated;
-create trigger profile_calendar_token
+create or replace trigger profile_calendar_token
   after insert on public.profiles
   for each row execute function conferencehub_private.create_calendar_token();
 
 -- The viewer always comes from the current session. These helpers serve row policies
 -- and live outside the schemas exposed by the Supabase Data API.
-create function conferencehub_private.shares_group_with(other_user uuid) returns boolean
+create or replace function conferencehub_private.shares_group_with(other_user uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
   select exists (
     select 1 from public.group_members viewer
@@ -43,13 +58,13 @@ language sql stable security definer set search_path = '' as $$
   );
 $$;
 
-create function conferencehub_private.group_role(target_group uuid) returns public.member_role
+create or replace function conferencehub_private.group_role(target_group uuid) returns public.member_role
 language sql stable security definer set search_path = '' as $$
   select role from public.group_members
   where group_id = target_group and user_id = (select auth.uid());
 $$;
 
-create function conferencehub_private.is_site_admin() returns boolean
+create or replace function conferencehub_private.is_site_admin() returns boolean
 language sql stable security definer set search_path = '' as $$
   select coalesce((select is_site_admin from public.profiles where id = (select auth.uid())), false);
 $$;
@@ -98,8 +113,8 @@ alter policy "suggestions read own" on public.suggestions to authenticated using
   user_id = (select auth.uid()) or (select conferencehub_private.is_site_admin())
 );
 
-drop function public.shares_group(uuid, uuid);
-drop function public.is_site_admin();
+drop function if exists public.shares_group(uuid, uuid);
+drop function if exists public.is_site_admin();
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
 revoke execute on function public.create_group(text), public.join_group(text) from public, anon;
 grant execute on function public.create_group(text), public.join_group(text) to authenticated;
