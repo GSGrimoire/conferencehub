@@ -28,7 +28,7 @@ Mandag og torsdag kl. 06 dansk tid. Siderne hentes kun, når der er gået 7 dage
 7. **Test og byg.** `node --test tests/*.test.mjs && node scripts/build.mjs`. Fejler noget, stoppes der, og intet flettes til `main`.
 8. **Udgiv.** Commit på `test` med beskeden `Redaktør <dato>`, push `test`, flet `test` ind i `main` (fast-forward) og push `main`. Cloudflare bygger siden fra `main`.
 9. **Godkendelser til Gus.** Er der punkter i `review/pending.json`, opdateres én Asana-opgave "[godkend] ConferenceHub-ændringer" (tildelt Gus). Den skal ligge både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min", fordi Gus kun ser Day To Day (se AGENTS.md). Hvert punkt får id, udgave, felt, gammel og ny værdi, citat og link, og en linje "Svar (skriv ja eller nej ud for hvert id):".
-10. **Supabase.** Læs én række fra `editions` med den offentlige nøgle i `site/config.js`, så projektet ikke går i dvale.
+10. **Supabase (kun læsning).** Kør `node scripts/check-supabase.mjs`. Scriptet læser højst én offentlig `editions`-række via Supabases database-API med den offentlige publishable key fra `site/config.js`; det ændrer ingen data eller brugerrettigheder. Kræver netværksadgang til projektet. Hvis kontrollen fejler, rapportér fejlen; notér ikke aktivitet som bekræftet. En vellykket læsning er ikke en garanti imod Supabases pause ved lav aktivitet.
 11. **Besked.** Skriv kun til Gus, når der venter godkendelser, eller noget er gået i stykker. Ellers ingen besked.
 
 ## Regler
