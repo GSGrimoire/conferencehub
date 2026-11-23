@@ -84,15 +84,9 @@
     const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname + location.search } });
     if (error) $("login-msg").textContent = `Google-login virker ikke endnu: ${error.message}`;
   };
-  if (cfg.emailLogin) {
-    $("login-email").hidden = false;
-    $("login-email").onsubmit = async (ev) => {
-      ev.preventDefault();
-      const email = $("login-email-input").value.trim();
-      const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + location.pathname } });
-      $("login-msg").textContent = error ? `Kunne ikke sende link: ${error.message}` : `Tjek din mail (${email}) og klik på linket.`;
-    };
-  }
+  // Passwordless email-code login is disabled until a verified mail sender and
+  // the Supabase email code template are configured and independently reviewed.
+  if (cfg.emailLogin) window.CHEmailLogin.setup(sb.auth);
 
   // ---------------------------------------------------------------- deltagelse på hver konference
   function decorate() {
