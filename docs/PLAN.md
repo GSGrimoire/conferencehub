@@ -1,6 +1,6 @@
 # ConferenceHub: plan, beslutninger og status
 
-Opdateret 16. november 2026.
+Opdateret 23. november 2026.
 
 - Opgaver og ansvarlige: Asana-projektet [ConferenceHub](https://app.asana.com/1/1199525921817881/project/1220566207179174)
 - Fuld plan for version 1: [plandokument](https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7)
@@ -26,6 +26,7 @@ En kurateret oversigt over konferencer i plastik- og rekonstruktiv kirurgi, hvor
 | 16. nov. 2026 | Gratis drift: Cloudflare (siden) og Supabase gratis (login og database). GitHub Actions-minutterne er brugt op til 1. dec., så alt bygges og kontrolleres lokalt, og overvågningen kører i Claude-redaktørens opgave |
 | 16. nov. 2026 | Den månedlige Excel-opgave stoppes, når platformen er klar |
 | 16. nov. 2026 | Asana-opgaver til Gus lægges både i ConferenceHub → "Til Gus" og i Gustav Day To Day → "Vigtigste opgave, 25 min". Gus ser kun Day To Day |
+| 23. nov. 2026 | Supabase har varslet pause pga. for lav databaseaktivitet. Read-only kontrol `node scripts/check-supabase.mjs` tilføjet som kandidat til redaktørens trin 10. Den oprettede kode og lokale tests alene giver ingen aktivitet på Supabase; kontrollen skal køres fra et miljø med netadgang. Login, rettigheder og database-migrationer ændres ikke. |
 | 16. nov. 2026 | Behold Supabase til SurgicalConferenceHub og GS QR Bar foreløbigt, uden tidlig opdeling. Ved delt `auth.users` fjerner kontosletning også GS QR Bar-login. Kræv tydelig advarsel, teknisk verifikation og uafhængig sikkerhedsreview før lancering. [Beslutningsnotat](decisions/0001-shared-supabase.md) |
 
 ## Arkitektur
@@ -83,3 +84,4 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 | Privatlivsside og "slet min konto" | I gang på `test` |
 | Mail-login, personligt kalenderfeed, admin-side | Mangler |
 | Supabase-synkronisering | Venter på GitHub Actions-minutter (1. dec.); siden læser data direkte fra repo'et og påvirkes ikke |
+| Supabase-aktivitet | Pausevarsel 23. nov.; read-only kontrol forberedt med tests, men ingen live-kørsel verificeret. En automatisk køreplan mangler fortsat. |
