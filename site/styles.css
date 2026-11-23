@@ -29,7 +29,8 @@ a { color: var(--drape); text-underline-offset: .18em; }
 
 .top { border-bottom: 1px solid var(--rule); background: var(--sheet); }
 .top-inner { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; padding-top: .9rem; padding-bottom: .9rem; }
-.brand { margin: 0; font: 800 1.35rem/1 var(--display); letter-spacing: -.01em; }
+.brand { margin: 0; font: 800 1.35rem/1 var(--display); letter-spacing: -.01em; display: inline-flex; align-items: center; gap: .6rem; align-self: center; }
+.brand img { display: block; width: 36px; height: 36px; flex: none; }
 .scope { margin: 0; color: var(--ink-soft); }
 
 /* ---------- tavlen ---------- */
