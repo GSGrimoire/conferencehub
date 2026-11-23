@@ -41,6 +41,10 @@ Kilder:
 - https://supabase.com/docs/guides/auth/social-sign-in/auth-azure
 - https://learn.microsoft.com/en-us/troubleshoot/entra/entra-id/app-integration/troubleshoot-consent-issues
 
+## Vigtig tværgående risiko
+
+Den konkrete Supabase Auth-konfiguration (afsender, SMTP-tjeneste og Magic Link-email-skabelon) gælder for **hele Supabase-projektet**, ikke kun ConferenceHubs frontend. Det er tidligere besluttet midlertidigt at bevare potentielt fælles Supabase-login med GS QR Bar, men delingen af selve Auth-projektet er ikke teknisk afklaret på tværs af apps. Før en ny skabelon installeres, skal vi kontrollere om GS QR Bar bruger samme projekt og om dens eventuelle e-mail-login afhænger af de eksisterende Magic Links. En global skabelonændring kan ellers bryde login i den anden app. Ingen globale Auth-ændringer før denne kompatibilitetskontrol og uafhængig Full review.
+
 ## Tekniske noter
 
 - `site/email-login.js` kalder `signInWithOtp({ email, options: { shouldCreateUser: true } })` og `verifyOtp({ email, token, type: "email" })`. Dermed kan en ny kollega oprette en konto via en verificeret mailadresse.
