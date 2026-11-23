@@ -1,6 +1,6 @@
 # ConferenceHub: plan, beslutninger og status
 
-Opdateret 16. november 2026.
+Opdateret 23. november 2026.
 
 - Opgaver og ansvarlige: Asana-projektet [ConferenceHub](https://app.asana.com/1/1199525921817881/project/1220566207179174)
 - Fuld plan for version 1: [plandokument](https://claude.ai/artifact/DdEGUCu7NkkLsE1WwgLfk7)
@@ -57,6 +57,8 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 - Deltagelse er synlig efter ejerens "Vis aktivitet". "Ingen" skjuler også personen på gruppens liste.
 - Grupper oprettes og joines kun via `create_group` og `join_group`. Gruppe-admin kan fjerne medlemmer.
 - Forslag kan ikke godkendes af brugeren selv.
+- Under review: Flyt kalendertokens til en ejerbeskyttet tabel, og begræns lister over gruppemedlemmer til brugerens egne grupper. Eksisterende kalendertokens overføres; der er endnu intet kalenderabonnement.
+- Under review: Databasen begrænser nye grupper til 10 pr. opretter og 250 i alt. Konferenceforslag begrænses til 5 pr. konto og 100 i alt pr. døgn (UTC). Forslag venter fortsat på manuel kontrol.
 - Den publishable key i `site/config.js` er offentlig af design. Secret key ligger kun i GitHub-secrets.
 
 ## Overvågning

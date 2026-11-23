@@ -199,9 +199,9 @@
 
         <form id="me-suggest" class="panel">
           <h3>Foreslå en konference</h3>
-          <p class="hint">Udfyld navn, link eller begge dele. Forslaget tjekkes, før det kommer på listen.</p>
+          <p class="hint">Udfyld navn, link eller begge dele. Forslag gennemgås før offentliggørelse. Du kan sende fem pr. døgn.</p>
           <label for="sg-name">Navn</label><input id="sg-name" maxlength="200">
-          <label for="sg-url">Link</label><input id="sg-url" type="url" placeholder="https://">
+          <label for="sg-url">Link</label><input id="sg-url" type="url" maxlength="2048" placeholder="https://">
           <label for="sg-note">Note (valgfri)</label><textarea id="sg-note" rows="2" maxlength="1000"></textarea>
           <p class="error" id="sg-err" role="alert"></p>
           <button class="btn" type="submit">Send forslag</button>
@@ -267,12 +267,28 @@
     };
     $("me-suggest").onsubmit = async (ev) => {
       ev.preventDefault();
+      const form = ev.currentTarget;
+      const submit = form.querySelector("button[type=submit]");
+      if (submit.disabled) return;
+      const message = $("sg-err");
       const name = $("sg-name").value.trim(), url = $("sg-url").value.trim(), note = $("sg-note").value.trim();
-      if (!name && !url) { $("sg-err").textContent = "Skriv et navn eller indsæt et link."; $("sg-name").setAttribute("aria-describedby", "sg-err"); $("sg-name").focus(); return; }
-      $("sg-err").textContent = "";
-      const { error } = await sb.from("suggestions").insert({ user_id: me.id, name: name || null, url: url || null, note: note || null });
-      if (error) return toast(`Kunne ikke sende forslaget: ${error.message}`);
-      ev.target.reset(); toast("Tak. Forslaget er sendt.");
+      if (!name && !url) { message.textContent = "Skriv et navn eller indsæt et link."; $("sg-name").setAttribute("aria-describedby", "sg-err"); $("sg-name").focus(); return; }
+      if (url && !/^https?:\/\//i.test(url)) { message.textContent = "Linket skal begynde med https:// eller http://."; $("sg-url").focus(); return; }
+      message.textContent = "";
+      submit.disabled = true;
+      try {
+        const { error } = await sb.from("suggestions").insert({ user_id: me.id, name: name || null, url: url || null, note: note || null });
+        if (error) {
+          message.textContent = error.code === "P0001" ? error.message : "Kunne ikke sende forslaget. Tjek oplysningerne, og prøv igen.";
+          return;
+        }
+        form.reset();
+        toast("Tak. Forslaget er sendt til gennemgang.");
+      } catch {
+        message.textContent = "Kunne ikke sende forslaget. Prøv igen om lidt.";
+      } finally {
+        submit.disabled = false;
+      }
     };
   }
   document.addEventListener("click", async (ev) => {
