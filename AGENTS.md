@@ -1,5 +1,9 @@
 # ConferenceHub: regler for Claude og ChatGPT
 
+## Fælles udviklingsregler
+
+Læs altid den aktuelle [GS Tools Hub AGENTS.md](https://github.com/GSGrimoire/gs-tools-hub/blob/main/AGENTS.md) og de relevante dokumenter, den henviser til. De fælles regler vedligeholdes dér; nedenstående lokale tekniske krav, test, sikkerhed og udgivelsesregler gælder stadig. Hvis Hub ikke kan læses, behold de lokale sikkerhedsregler og udsæt handlinger, der kræver ubekræftet tilladelse. Se [Hub #4](https://github.com/GSGrimoire/gs-tools-hub/issues/4) og [Hub #69](https://github.com/GSGrimoire/gs-tools-hub/pull/69). Ingen ændring af automatisering eller udgivelsesrettigheder.
+
 Læs [docs/PLAN.md](docs/PLAN.md) (beslutninger og status) og [docs/EDITOR.md](docs/EDITOR.md) (redaktørens procedure) før arbejde i repo'et.
 
 ## Ejer og arbejdsdeling
@@ -19,4 +23,4 @@ Læs [docs/PLAN.md](docs/PLAN.md) (beslutninger og status) og [docs/EDITOR.md](d
 ## Grænser
 
 - Ingen hemmelige nøgler i repo'et, Asana eller beskeder. Den publishable key i `site/config.js` er offentlig af design.
-- GitHub Actions-minutterne er brugt op til 1. dec. 2026. Byg og kontrollér lokalt; overvågningen kører i redaktørens planlagte opgave.
+- Følg Hub-reglerne om GitHub Actions og lokale kontroller. Overvågningen kører stadig i redaktørens planlagte opgave. Kontrollér altid faktisk udløser for Cloudflare-bygning og Supabase-synkronisering før fletning.

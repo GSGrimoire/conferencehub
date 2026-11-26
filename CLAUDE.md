@@ -1,1 +1,3 @@
-Læs [AGENTS.md](AGENTS.md). Reglerne gælder både Claude og ChatGPT og vedligeholdes kun dér.
+@AGENTS.md
+
+Læs AGENTS.md. De fælles regler vedligeholdes i Hub; de lokale krav findes i AGENTS.md.
