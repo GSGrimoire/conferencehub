@@ -9,7 +9,7 @@ Læs [docs/PLAN.md](docs/PLAN.md) (beslutninger og status) og [docs/EDITOR.md](d
 ## Ejer og arbejdsdeling
 
 - Gus koder og fletter ikke selv. Claude eller ChatGPT bygger, kontrollerer og fletter.
-- Branches: alt nyt lander på `test`. Efter bestået kontrol (tests, build, browsertjek) flettes `test` ind i `main` med fast-forward. `main` er det, der er online; Cloudflare bygger fra `main`, og Supabase kører migrationer ved push til `main`.
+- Branches: alt nyt lander på `test`. Efter bestået kontrol (tests, build, browsertjek) flettes `test` ind i `main` med fast-forward. `main` er kilde til produktion. Kontrollér den faktiske publicering i Cloudflare og migrationsstatus i Supabase. Se [udgivelsesstatus](docs/PLAN.md#udgivelsesstatus).
 - Review: Mini (egen kontrol) til indhold, data og visning. Full review af en anden end forfatteren (ChatGPT eller en separat Claude-session) før `main` for login, rettigheder, migrationer og alt, der sletter eller viser brugerdata. Samme regler som i GS Tools Hub (`docs/REVIEW_PLAYBOOK.md` i gs-tools-hub).
 - Én session ad gangen arbejder i repo'et. Skriv status i `docs/PLAN.md` og i Asana, så den næste kan fortsætte.
 
@@ -23,4 +23,4 @@ Læs [docs/PLAN.md](docs/PLAN.md) (beslutninger og status) og [docs/EDITOR.md](d
 ## Grænser
 
 - Ingen hemmelige nøgler i repo'et, Asana eller beskeder. Den publishable key i `site/config.js` er offentlig af design.
-- Følg Hub-reglerne om GitHub Actions og lokale kontroller. Overvågningen kører stadig i redaktørens planlagte opgave. Kontrollér altid faktisk udløser for Cloudflare-bygning og Supabase-synkronisering før fletning.
+- Følg Hub-reglerne om GitHub Actions og lokale kontroller. [Redaktørens procedure](docs/EDITOR.md) beskriver overvågningen og dens planlagte kørsel. Kontrollér de faktiske udløsere for Cloudflare-bygning og Supabase-synkronisering før fletning.

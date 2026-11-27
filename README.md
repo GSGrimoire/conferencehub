@@ -15,10 +15,10 @@ Pilot: Plastikkirurgisk Afdeling, Herlev Hospital (læger og sygeplejersker).
 | --- | --- |
 | `data/editions.json` | Konferenceudgaver i pilot-scope. Hver udgave har et fast id (fx `dspr-efteraarsmoede-2026`), som deltagelse hænger på |
 | `data/series.json` | Konferenceserier med korte navne |
-| `supabase/migrations/` | Databaseskema med rækkesikkerhed. Køres af Supabase-GitHub-koblingen ved push til `main` |
+| `supabase/migrations/` | Databaseskema med rækkesikkerhed. Kontrollér migrationshistorikken i Supabase ved udgivelse |
 | `scripts/sync.mjs` | Lægger `data/` ind i Supabase (kører i `.github/workflows/sync.yml`) |
 | `site/` | Siden (HTML, CSS, JS, egne skrifttyper). `auth.js` = login og deltagelse, `config.js` = Supabase-URL og publishable key |
-| `scripts/build.mjs` | Bygger `dist/` til Cloudflare Pages |
+| `scripts/build.mjs` | Bygger `dist/` til Cloudflare Workers |
 | `data/watch.json` | Overvågningslisten: sider pr. udgave, hentemåde og evt. interval |
 | `scripts/watch.mjs` | Ugentlig ændringsdetektion (kører i Claude-redaktørens planlagte opgave) |
 | `scripts/apply.mjs` | Redaktørens kontrol i kode: kilde, ordret citat, dato, frist før start. Udgiver eller lægger til godkendelse |
@@ -40,7 +40,7 @@ cd dist && python3 -m http.server 8000
 
 Åbn http://localhost:8000. Tilføj `?today=2027-01-15` for at se siden, som den ser ud på en anden dato.
 
-Cloudflare: build-kommando `node scripts/build.mjs`, output-mappe `dist`. Siden bygges fra `main`.
+Byg produktion fra `main` med `node scripts/build.mjs`. Publicering og verifikation i Cloudflare er selvstændige trin. Se [udgivelsesstatus](docs/PLAN.md#udgivelsesstatus).
 
 ## Kontrollér Supabase-forbindelsen
 
@@ -63,9 +63,9 @@ Reglen håndhæves i databasen (`attendance read`-politikken), ikke kun på hjem
 
 ## Datavej
 
-1. Claude-redaktøren (planlagt opgave, se [docs/EDITOR.md](docs/EDITOR.md)) kører overvågningen ugentligt og finder nye værdier med ordret kildecitat.
+1. Claude-redaktøren følger den [ugentlige procedure](docs/EDITOR.md) og finder nye værdier med ordret kildecitat.
 2. `scripts/apply.mjs` kontrollerer hvert forslag. Tomme felter udgives, ændringer venter på Gus' godkendelse i Asana.
-3. Ved push til `main` bygger Cloudflare siden. `sync.yml` lægger `data/` ind i Supabase, når der er GitHub Actions-minutter (ikke før 1. dec. 2026).
+3. Cloudflare serverer den publicerede udgave af `dist/`, inklusive konferencedata. `sync.yml` synkroniserer dataændringer fra `main` til Supabase, når arbejdsgangen køres. Kontrollér begge efter en relevant udgivelse.
 
 ## Status
 
@@ -73,8 +73,8 @@ Reglen håndhæves i databasen (`attendance read`-politikken), ikke kun på hjem
 - [x] Fase 0: Supabase-projekt, migration og synkronisering
 - [x] Fase 1: online på https://conferencehub.goofyspook.workers.dev
 - [x] Fase 1: læsbar side (filtre, søgning, tidslinje, frister, kalenderfil pr. konference)
-- [x] Fase 2: ændringsdetektion (html og pdf), ugentlig fra 16. nov.
+- [x] Fase 2: ændringsdetektion (html og pdf), prøvekørt 16. nov.
 - [x] Fase 2: redaktørens kontrol i kode og godkendelsesliste (16. nov., testet lokalt)
 - [ ] Fase 2: redaktøren som planlagt opgave, browserhentning, seriesider for næste udgave
-- [x] Fase 3 (beta): login med Google, grupper med invitationslink, deltagelse, Vis aktivitet, forslag
-- [ ] Fase 3: mail-login (kræver eget domæne + SMTP), personligt kalenderfeed
+- [ ] Fase 3 (beta): grupper, deltagelse og forslag er bygget. Google-login afventer konfiguration og en rigtig loginprøve
+- [ ] Fase 3: mail-login (kræver afsenderopsætning og leveringsprøve), personligt kalenderfeed
