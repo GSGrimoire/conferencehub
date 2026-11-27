@@ -77,22 +77,52 @@
 
   // ---------------------------------------------------------------- login
   const dlg = $("login-dialog");
+  const captcha = cfg.emailLogin && cfg.emailTurnstileSiteKey
+    ? window.CHEmailLogin.createCaptcha($("login-email-captcha"), cfg.emailTurnstileSiteKey)
+    : null;
+  const emailLogin = captcha ? window.CHEmailLogin.setup(sb.auth, { captcha }) : null;
   document.addEventListener("click", (ev) => {
-    if (ev.target.closest("[data-login]")) { $("login-msg").textContent = ""; dlg.showModal(); }
+    if (ev.target.closest("[data-login]")) {
+      emailLogin?.reset({ focus: false });
+      $("login-msg").textContent = "";
+      dlg.showModal();
+      captcha?.open();
+    }
   });
-  $("login-google").onclick = async () => {
-    const { error } = await sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname + location.search } });
-    if (error) $("login-msg").textContent = `Google-login virker ikke endnu: ${error.message}`;
+  dlg.addEventListener("close", () => {
+    if (dlg.open) return;
+    emailLogin?.reset({ focus: false });
+    captcha?.close();
+  });
+  const googleButton = $("login-google");
+  googleButton.onclick = async () => {
+    googleButton.disabled = true;
+    try {
+      const response = await fetch(new URL("/auth/v1/settings", cfg.supabaseUrl), {
+        headers: { apikey: cfg.publishableKey },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!response.ok) throw new Error("Provider settings unavailable");
+      const settings = await response.json();
+      if (!dlg.open) return;
+      if (settings.external?.google === false) {
+        $("login-msg").textContent = "Google-login er endnu ikke slået til. Du kan se konferencer og frister uden at logge ind.";
+        return;
+      }
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: location.origin + location.pathname + location.search },
+      });
+      if (error) throw error;
+    } catch {
+      if (dlg.open) $("login-msg").textContent = "Kunne ikke starte Google-login. Prøv igen om lidt.";
+    } finally {
+      googleButton.disabled = false;
+    }
   };
-  if (cfg.emailLogin) {
-    $("login-email").hidden = false;
-    $("login-email").onsubmit = async (ev) => {
-      ev.preventDefault();
-      const email = $("login-email-input").value.trim();
-      const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + location.pathname } });
-      $("login-msg").textContent = error ? `Kunne ikke sende link: ${error.message}` : `Tjek din mail (${email}) og klik på linket.`;
-    };
-  }
+  // Passwordless email-code login is disabled until a verified mail sender and
+  // the Supabase email code template are configured and independently reviewed.
+
 
   // ---------------------------------------------------------------- deltagelse på hver konference
   function decorate() {
@@ -291,6 +321,7 @@
   let loaded = false;
   sb.auth.onAuthStateChange((event) => {
     if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
+      emailLogin?.reset({ focus: false });
       if (dlg.open) dlg.close();
       if (loaded || event === "SIGNED_OUT") setTimeout(load, 0);
     }

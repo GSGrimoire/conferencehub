@@ -70,8 +70,16 @@
   <p>Log ind for at melde din deltagelse og se, hvem fra dine grupper der skal afsted. <a href="privatliv.html">Sådan bruger vi dine oplysninger</a>.</p>
   <button class="btn solid" type="button" id="login-google">Fortsæt med Google</button>
   <form id="login-email" hidden>
-    <label for="login-email-input">Eller få et login-link på mail</label>
-    <div class="inline"><input type="email" id="login-email-input" required autocomplete="email"><button class="btn" type="submit">Send link</button></div>
+    <label for="login-email-input">Eller log ind med din e-mail (fx navn@regionh.dk)</label>
+    <div class="inline"><input type="email" id="login-email-input" required autocomplete="email" placeholder="navn@regionh.dk" maxlength="254"><button class="btn" type="submit" id="login-email-send">Send engangskode</button></div>
+  </form>
+  <div id="login-email-captcha" hidden></div>
+  <form id="login-email-verify" hidden>
+    <p class="hint">Kode sendt til <strong id="login-email-target"></strong>. Find koden i din mail, og skriv den her.</p>
+    <label for="login-email-code">Sekscifret engangskode</label>
+    <div class="inline"><input id="login-email-code" inputmode="numeric" autocomplete="one-time-code" required><button class="btn" type="submit" id="login-email-confirm">Log ind</button></div>
+    <button class="btn" type="button" id="login-email-resend" disabled>Send ny kode (60 s)</button>
+    <button class="linklike" type="button" id="login-email-reset">Brug en anden e-mailadresse</button>
   </form>
   <p class="hint" id="login-msg" role="status"></p>
 </dialog>
@@ -79,6 +87,7 @@
 <script src="vendor/supabase.js" defer></script>
 <script src="config.js" defer></script>
 <script src="app.js" defer></script>
+<script src="email-login.js" defer></script>
 <script src="auth.js" defer></script>
 </body>
 </html>

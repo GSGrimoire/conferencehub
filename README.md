@@ -51,6 +51,10 @@ Fra repoets rod kan redaktøren køre `node scripts/check-supabase.mjs`. Det lav
 - `test`: alt nyt lander her først og kontrolleres lokalt (tests, build, browser).
 - `main`: det, der er online. Claude eller ChatGPT fletter `test` ind i `main`, når kontrollen er bestået. Gus fletter ikke selv.
 
+## E-mail-login for kolleger
+
+Kodelogin til `@regionh.dk` og andre adresser afventer en verificeret mailafsender, to kodeskabeloner, botbeskyttelse og en uafhængig gennemgang. Læs [opsætning og pilotforløb](docs/EMAIL_LOGIN.md).
+
 ## Vis aktivitet
 
 Hver bruger vælger, hvem der kan se deres deltagelse:
