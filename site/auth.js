@@ -102,6 +102,10 @@
     });
     document.querySelectorAll(".mine[data-ed]").forEach((el) => {
       const id = el.dataset.ed, past = el.dataset.past === "1";
+      if (el.dataset.cancelled === "1") {
+        el.innerHTML = mine.has(id) ? `<button type="button" class="linklike" data-att="" data-ed="${esc(id)}">Fjern din deltagelse</button>` : "";
+        return;
+      }
       const others = crowd.get(id) || [];
       const list = others.length
         ? `<p class="who">${others.map((o) => `${esc(o.name)} (${STATUS[o.status].toLowerCase()})`).join(", ")}</p>` : "";
@@ -186,7 +190,7 @@
         <section class="panel" aria-labelledby="me-confs-title">
           <h3 id="me-confs-title">Mine konferencer</h3>
           ${myEds.length ? `<ul class="plain">${myEds.map((e) => `<li><a href="#e-${esc(e.id)}">${esc(e.name)}</a><br>
-            <span class="hint">${esc(fmtRange(e.start, e.end))}, ${STATUS[mine.get(e.id)].toLowerCase()}</span></li>`).join("")}</ul>`
+            <span class="hint">${esc(fmtRange(e.start, e.end))}, ${e.status === "cancelled" ? "aflyst" : STATUS[mine.get(e.id)].toLowerCase()}</span></li>`).join("")}</ul>`
             : `<p>Du har ikke meldt dig til noget endnu. Åbn en konference i listen og vælg Deltager eller Overvejer.</p>`}
         </section>
 

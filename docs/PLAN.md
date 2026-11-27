@@ -77,6 +77,7 @@ Alle regler håndhæves i databasen med rækkesikkerhed (RLS), ikke kun på side
 | --- | --- |
 | Fase 0: repo, pilotdata (21 udgaver, 18 serier), skema | Færdig |
 | Fase 1: læsbar side | Online |
+| Fase 1: tydeligere frister, kilder og aflysninger | Rettet på udviklingsgren 23. nov. Afventer integration og udgivelse |
 | Fase 2: overvågning (html, pdf) | Ugentlig fra 16. nov.; køres lokalt indtil redaktøren er planlagt |
 | Fase 2: redaktørens kontrol og godkendelsesliste | Bygget og testet lokalt 16. nov. |
 | Fase 2: redaktøren som planlagt opgave, seriesider, browserhentning | Mangler |
