@@ -102,5 +102,13 @@
     "source_url": "https://www.euroburn.org/event/22nd-eba-congress/",
     "quote": "15 Sep 2027 - 18 Sep 2027",
     "fetched_at": "2026-11-16"
+  },
+  {
+    "edition_id": "dusseldorf-breast-meeting-2027",
+    "field": "early_bird_deadline",
+    "value": "2027-01-15",
+    "source_url": "https://dusseldorf-breast-meeting.com/en/book",
+    "quote": "Early registration until January 15, 2027",
+    "fetched_at": "2026-11-16"
   }
 ]

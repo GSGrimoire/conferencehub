@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "1191001beb",
+    "decision": "approved",
+    "date": "2026-11-27",
+    "item": {
+      "id": "1191001beb",
+      "edition_id": "dusseldorf-breast-meeting-2027",
+      "field": "early_bird_deadline",
+      "value": "2027-01-15",
+      "url": "https://dusseldorf-breast-meeting.com/en/book",
+      "quote": "Early registration until January 15, 2027",
+      "old_value": "2027-01-12",
+      "reason": "ændrer en eksisterende værdi",
+      "created": "2026-11-16"
+    }
+  }
+]
